@@ -1,0 +1,196 @@
+import { Component, OnInit } from '@angular/core';
+import { ToastController } from '@ionic/angular';
+import Swal  from 'sweetalert2';
+import { SchedulerService } from '../services/scheduler.service';
+import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
+
+
+@Component({
+  selector: 'app-schedule',
+  templateUrl: './schedule.page.html',
+  styleUrls: ['./schedule.page.scss'],
+})
+export class SchedulePage implements OnInit {
+  clocks = [
+    {clock:'08:00', avail: 1},{clock:'09:00', avail: 1},{clock:'10:00', avail: 1},
+    {clock:'11:00', avail: 1},{clock:'12:00', avail: 1},{clock:'13:00', avail: 1},
+    {clock:'14:00', avail: 1},{clock:'15:00', avail: 1},{clock:'16:00', avail: 1},
+    {clock:'17:00', avail: 1},{clock:'18:00', avail: 1},{clock:'19:00', avail: 1}
+  ];
+  constructor(public toastController: ToastController, private api: SchedulerService,
+    private router: Router) { }
+  formApply = {
+    applyDate: '',
+    clock: ''
+  }
+
+  formConseling = {
+    patientId: localStorage.getItem('_ID'),
+    description: '',
+    title: ''
+  }
+
+  conselingApp = [];
+
+  segmentSchedule: 'new' | 'history';
+
+  ngOnInit() {
+    this.segmentSchedule = 'new';
+    this.formApply.applyDate = this.formatDate()
+    var fromClock = 8;
+    let tempClock = {};
+    let tempClocks = []
+    this.clocks.forEach(item => {
+      let form = {
+        date: this.formApply.applyDate,
+        time: item.clock
+      }
+      setTimeout(() => {
+        this.api.getSchedule(form).subscribe((res: any) => {
+          res.data.forEach(element => {
+            if(form.date == element.date && form.time == element.time){
+              item.avail = 0
+            } 
+          });
+        })
+      }, 500)
+    });
+    this.updateConseling()
+  }
+
+
+  settingSchedule() {
+    console.log(this.formApply)
+    this.generateSchedule();
+  }
+
+  formatDate() {
+    var d = new Date();
+    var month = '' + (d.getMonth() + 1);
+    var day = '' + d.getDate();
+    var year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  segmentChanged($event){
+    this.segmentSchedule = $event.detail.value;
+  }
+
+  setTime(clock) {
+    if(clock.avail) {
+      this.formApply.clock = clock.clock;
+      this.presentToast('Anda telah memilih pukul'+ this.formApply.clock, 'warning')
+    } else {
+      this.presentToast('Jam '+ clock.clock +' saat ini tidak tersedia', 'danger')
+    }
+  }
+
+  async presentToast(msg: string, color = 'primary', position = "middle") {
+    const toast = await this.toastController.create({
+      message: msg,
+      color: color,
+      position: 'middle',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  generateSchedule(){
+    Swal.mixin({
+      input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      showCancelButton: true,
+      progressSteps: ['1', '2']
+    }).queue([
+      {
+        title: 'Topik',
+        text: 'Topik yang akan dibahas / Masalah yang dialami'
+      },
+      {
+        title: 'Deskripsi',
+        text: 'Deskripsikan secara singkat terkait topik yang akan dibahas'
+      }
+    ]).then((result) => {
+      console.log(result.value)
+      if(result.value) {
+        if (result.value[0] != "" && result.value[1] != "" 
+        && result.value[0] != " " && result.value[1] != " " ) {
+          this.formConseling.title = result.value[0];
+          this.formConseling.description = result.value[1];
+          this.api.setSchedule({date: this.formApply.applyDate, time: this.formApply.clock, 
+            title: this.formConseling.title, description: this.formConseling.description, patientId: localStorage.getItem('_ID')})
+          .subscribe(resp => console.log(resp))
+          Swal.fire({
+            title: 'All done!',
+            confirmButtonText: 'Done'
+          })
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Maaf gagal membuat jadwal dikarenakan data yang anda masukan kurang'
+          })
+        }
+      }
+    })
+  }
+
+  checkSchedule() {
+    this.clocks.forEach(item => {
+      item.avail = 1;
+    })
+    this.api.getScheduleByDate(this.formApply.applyDate).subscribe((res: any) => {
+      let tempClock = res.data;
+      this.clocks.forEach(item => {
+        tempClock.forEach(element => {
+          if(item.clock == element.time){
+            item.avail = 0
+          } 
+        });
+      })
+    })
+  }
+
+  navigateTo(page) {
+    switch (page) {
+      case 'home':
+        this.router.navigateByUrl('/home');
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  updateConseling() {
+    this.api.getConseling().subscribe((res: any) => {
+      // this.conselingApp = res.data;
+      res.data.forEach(element => {
+        if(element.status == 1) {
+          element.statusTxt = "Jadwal Telah Disetujui"
+          element.color = "primary"
+        } else if(element.status == 9) {
+          element.statusTxt = "Jadwal Telah Ditolak"
+          element.color = "danger"
+        } else {
+          element.statusTxt = "Menunggu Konsfirmasi"
+          element.color = "warning"
+        }
+        this.api.getScheduleConseling(element.scheduleId).subscribe((res: any) => {
+          element.date = res.data[0].date;
+          element.time = res.data[0].time;
+        })
+      });
+      this.conselingApp = res.data;
+      console.log(this.conselingApp)
+    });
+  }
+
+  
+}

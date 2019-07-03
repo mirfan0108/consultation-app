@@ -20,9 +20,12 @@
       </div>
     </ion-slide>
     <ion-slide>
-      <div style="padding: 15px;">
-        <p>Terhubung dengan konselor terpercaya dan ahli dalam bidang ini</p>
-      </div>
+      <ion-card-content>
+        <div style="padding: 0; width: 100%;">
+          <p>Terhubung dengan konselor terpercaya dan ahli dalam bidang ini</p>
+          <ion-button expand="block" fill="clear" (click)="navigateTo('Home')">Next</ion-button>
+        </div><br>
+      </ion-card-content>
     </ion-slide>
   </ion-slides>
 </ion-content>
@@ -30,7 +33,7 @@
 <ion-footer>
   <ion-row>
     <ion-col>
-      <ion-button expand="block" fill="clear" click="navigateTo('Home')">LEWATI</ion-button>
+      <ion-button expand="block" fill="clear" (click)="navigateTo('Home')">LEWATI</ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>

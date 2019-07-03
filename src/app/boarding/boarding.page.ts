@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-boarding',
@@ -7,16 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardingPage implements OnInit {
   logo: any;
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.logo = '../../assets/images/logo.png'
   }
 
   navigateTo(page: string){
+    console.log('tes')
     switch (page) {
       case 'Home':
-        console.log('Link To Home Page')
+        console.log('tohome')
+        this.router.navigateByUrl('/home');
         break;
     
       default:

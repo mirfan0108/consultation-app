@@ -1,9 +1,86 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>user</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <ion-button fill="clear" (click)="navigateTo('home')">
+        Kembali
+      </ion-button>
+    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-row justify-content-center padding>
+    <ion-avatar>
+      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+    </ion-avatar>
+  </ion-row>
+  <ion-list>
+    <ion-list-header>
+      Data Diri
+    </ion-list-header>
+    <ion-item>
+      <ion-label position="floating" color="primary">Nama Lengkap</ion-label>
+      <ion-input (keyup)="doChange()" [(ngModel)]="formUpdate.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" color="primary">Lahir</ion-label>
+      <ion-datetime (keyup)="doChange()" [(ngModel)]="formUpdate.birth" display-format="MM-DD-YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" color="primary">No Hp</ion-label>
+      <ion-input (keyup)="doChange()" type="number" [(ngModel)]="formUpdate.hp" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" color="primary">Alamat</ion-label>
+      <ion-textarea (keyup)="doChange()" type="text" [(ngModel)]="formUpdate.address"></ion-textarea>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label position="floating" color="primary">Pekerjaan</ion-label>
+      <ion-input  [(ngModel)]="formUpdate.job"></ion-input>
+    </ion-item> -->
+  </ion-list>
+  <ion-list>
+      <ion-radio-group (ionChange)="doChange()"  [(ngModel)]="formUpdate.gender" >
+        <ion-list-header>
+          Jenis Kelamin
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Pria</ion-label>
+          <ion-radio value="men"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Wanita</ion-label>
+          <ion-radio value="women"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  <ion-card-content  *ngIf="isChanged">
+    <ion-row justify-content-center padding>
+      <ion-button expand="block" color="primary" (click)="doUpdate()" >Perbarui</ion-button>
+    </ion-row>
+  </ion-card-content>
+  <!-- <ion-row justify-content-start padding>
+    <ion-col size="4">
+      <ion-avatar>
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+    </ion-col>
+    <ion-col size="8">
+      <ion-card-content>
+        <table border="1">
+          <tr>
+            <td colspan="2">Riwayat</td>
+          </tr>
+          <tr>
+            <td>Konseling</td>
+            <td>Pengaduan</td>
+          </tr>
+          <tr>
+            <td>1</td><td>1</td>
+          </tr>
+        </table>
+      </ion-card-content>
+    </ion-col>
+  </ion-row> -->
 </ion-content>

@@ -1,9 +1,98 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
+  <ion-toolbar  color="primary">
+    <ion-segment (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="signin"  checked>
+        <ion-label>Masuk</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="signup">
+        <ion-label>Daftar</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-card-header *ngIf="segmentToolbar == 'signin'">
+    <ion-row justify-content-center padding>
+      <img [src]="logo" alt="LOGO" width="200">
+    </ion-row>
+  </ion-card-header>
+  <div class="login-content" *ngIf="segmentToolbar == 'signin'">
+    <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Username</ion-label>
+          <ion-input type="text"  [(ngModel)]="formLogin.username" *ngIf="!loading"></ion-input>
+          <ion-input type="text"  [(ngModel)]="formLogin.username" *ngIf="loading" disabled></ion-input>
+        </ion-item>
+        <ion-item lines="none" *ngIf="errorMsgLogin.username">
+          <small *ngIf="errorMsgLogin.username" style="color: red">Username tidak boleh kosong</small>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" [(ngModel)]="formLogin.password" *ngIf="!loading"></ion-input>
+          <ion-input type="password" [(ngModel)]="formLogin.password" *ngIf="loading" disabled></ion-input>
+        </ion-item>
+        <ion-item lines="none" *ngIf="errorMsgLogin.password || errorMsgLogin.passwordLength">
+          <small *ngIf="errorMsgLogin.password" style="color: red">Password tidak boleh kosong</small>
+          <small *ngIf="errorMsgLogin.passwordLength" style="color: red">Password harus lebih dari 6 karakter</small>
+        </ion-item>
+      <ion-button expand="block" color="primary" (click)="doSubmit('signin')" 
+      disabled="{{formLogin.password == '' || formLogin.username == ''}}">
+        Masuk
+        <ion-spinner name="crescent" style="margin-left: 10px;" *ngIf="loading"></ion-spinner>
+      </ion-button>
+    </ion-card-content>
+  </div>
+  
+  <div class="regist-content" *ngIf="segmentToolbar == 'signup'">
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="formRegist.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nama Lengkap</ion-label>
+        <ion-input type="text" [(ngModel)]="formRegist.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label >Tanggal Lahir</ion-label>
+        <ion-datetime [(ngModel)]="formRegist.birth" display-format="MM-DD-YYYY"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">No. Hp</ion-label>
+        <ion-input type="number" [(ngModel)]="formRegist.hp" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Alamat</ion-label>
+        <ion-textarea type="text" [(ngModel)]="formRegist.address"></ion-textarea>
+      </ion-item>
+      <ion-list>
+        <ion-radio-group  [(ngModel)]="formRegist.gender" >
+          <ion-list-header>
+            Jenis Kelamin
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Pria</ion-label>
+            <ion-radio value="men"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Wanita</ion-label>
+            <ion-radio value="women"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" [(ngModel)]="formRegist.password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">ConfirmPassword</ion-label>
+        <ion-input type="password" [(ngModel)]="formRegist.confirmPassword"></ion-input>
+      </ion-item>
+      <ion-button expand="block" color="primary" (click)="doSubmit('signup')" 
+      disabled="{{formRegist.email == '' || formRegist.name == '' 
+      || formRegist.hp == '' || formRegist.address == '' || formRegist.password == ''
+      || formRegist.password != formRegist.confirmPassword}}">Daftar</ion-button>
+    </ion-card-content>
+  </div>
 </ion-content>
