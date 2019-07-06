@@ -4,7 +4,7 @@
     <ion-title>Beranda</ion-title> 
     <ion-buttons slot="end">
       <!-- <ion-button><ion-icon name="notifications"></ion-icon></ion-button> -->
-      <!-- <ion-button><ion-icon name="cog"></ion-icon></ion-button> -->
+      <!-- <ion-button><ion-icon name="chatboxes"></ion-icon></ion-button> -->
     </ion-buttons>
   </ion-toolbar>
   <!-- <div class="ion-padding">
@@ -16,7 +16,7 @@
     Jadwal Konseling terbaru
   </ion-row>
   <ion-card *ngFor="let conseling of conselingApp">
-    <img src="../../assets/images/Mockup/user/ava1.jpg">
+    <!-- <img src="../../assets/images/Mockup/user/ava1.jpg"> -->
     <ion-card-header>
       <ion-card-subtitle>{{conseling.title}}</ion-card-subtitle>
       <ion-card-title>{{conseling.date}} <ion-badge color="{{conseling.color}}">{{conseling.statusTxt}}</ion-badge> </ion-card-title>
@@ -44,8 +44,8 @@
       <label style="font-size: 6px;">Jadwal</label>
     </ion-segment-button>
     <!-- <ion-segment-button>
-      <ion-icon name="contact"></ion-icon>
-      <label style="font-size: 6px;">Kontak</label>
+      <ion-icon name="time"></ion-icon>
+      <label style="font-size: 6px;">Sejarah</label>
     </ion-segment-button> -->
     <ion-segment-button (click)="doLogout()">
       <ion-icon name="backspace"></ion-icon>

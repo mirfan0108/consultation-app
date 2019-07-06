@@ -45,7 +45,26 @@
   </div>
   
   <div class="regist-content" *ngIf="segmentToolbar == 'signup'">
+    <ion-card>
+      <ion-item lines="none">
+        <ion-label>Daftar Sebagai Konselor</ion-label>
+        <ion-toggle [(ngModel)]="isConselor" ></ion-toggle>
+      </ion-item>
+      <ion-card-content>
+        <ion-note>Anda Mendaftar sebagai Konselor</ion-note>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-row justify-content-center>
+      <div class="avatar-element">
+        <img [src]="avatarMen" >
+        <ion-button slot="icon-only" fill="clear" class="btn-camera" (click)="doInputFile()"><ion-icon name="reverse-camera"></ion-icon></ion-button>
+      </div>
+    </ion-row>
     <ion-card-content>
+      <ion-item hidden>
+        <input id="input-avatar" type="file"  (change)="changeListener($event)">
+      </ion-item>
       <ion-item>
         <ion-label position="floating">Email</ion-label>
         <ion-input type="email" [(ngModel)]="formRegist.email"></ion-input>

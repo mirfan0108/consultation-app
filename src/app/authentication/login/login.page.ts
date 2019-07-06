@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/auth/user';
 import { Router, ActivatedRoute } from '@angular/router';
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,11 @@ export class LoginPage implements OnInit {
   logo: any;
   loading: boolean;
   segmentToolbar: 'signin'|'signup';
+
+  avatarMen = "../../../assets/images/men.jpg";
+  avatarWomen = "../../../assets/images/women.jpg";
+
+  isConselor: boolean = false;
 
   submitted = false;
   delay = 5000;
@@ -56,8 +62,29 @@ export class LoginPage implements OnInit {
       window.location.href = this.next;
     }
   }
+  file: File;
+
+  changeListener($event) : void {
+      this.file = $event.target.files[0];
+      if($event.target.files && $event.target.files[0]){
+        let reader = new FileReader();
   
+        reader.onload = (event:any) => {
+          this.avatarMen = event.target.result;
+        }
+        reader.readAsDataURL($event.target.files[0]);
+      }
+        let fileList: FileList = $event.target.files;  
+        // let file: File = fileList[0];
+        // console.log(file);
+  }
+  doInputFile() {
+    $('#input-avatar').click()
+  }
+
   segmentChanged($event){
+    this.formLogin.username = '';
+    this.formLogin.password = '';
     this.segmentToolbar = $event.detail.value;
   }
   doLogin(){
@@ -84,6 +111,7 @@ export class LoginPage implements OnInit {
         email: this.formLogin.username,
         password: this.formLogin.password
       }
+      
       // if(this.resRegist){
       //   form.password = this.formRegist.confirmPassword;
       //   form.email = this.formRegist.email;  
@@ -95,7 +123,11 @@ export class LoginPage implements OnInit {
         if(res.length > 0) {
           this.resLogin = true;
           if(res[0]._id) {
-            window.location.href = this.next;
+            if(res[0].role == 1) {
+              this.router.navigateByUrl('/conselor');
+            } else {
+              this.router.navigateByUrl('/home');
+            }
           }
         } else {
           this.resLogin = false;
@@ -109,33 +141,85 @@ export class LoginPage implements OnInit {
     
   }
 
-  doRegist() {
-    let form = {
-      user: {
-        email: this.formRegist.email,
-        password: this.formRegist.confirmPassword
-      },
-      profile: {
-        name: this.formRegist.name,
-        avatar: "",
-        hp: this.formRegist.hp,
-        gender: this.formRegist.gender,
-        birth: this.formRegist.birth,
-        address: this.formRegist.address
+  async doRegist() {
+    if(this.file) {
+
+      await this.api.uploadAvatar(this.file).subscribe((res: any) => {
+        if(res.name) {
+          this.formRegist.avatar = res.name;
+        }
+        console.log(res.name)
+        let form = {
+          user: {
+            email: this.formRegist.email,
+            password: this.formRegist.confirmPassword,
+            role: 0
+          },
+          profile: {
+            name: this.formRegist.name,
+            avatar: this.formRegist.avatar,
+            hp: this.formRegist.hp,
+            gender: this.formRegist.gender,
+            birth: this.formRegist.birth,
+            address: this.formRegist.address
+          }
+        }
+        if(this.isConselor == true) {
+          form.user.role = 1
+        } 
+        
+    
+        this.api.register(form).subscribe((resp: any) => {
+          if(resp.code == 409)  {
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: resp.msg
+            })
+            this.resRegist = false;
+            
+          } else {
+            this.resRegist = true;  
+          }
+          console.log(resp)});
+      })
+    } else {
+      let form = {
+        user: {
+          email: this.formRegist.email,
+          password: this.formRegist.confirmPassword,
+          role: 0
+        },
+        profile: {
+          name: this.formRegist.name,
+          avatar: this.formRegist.avatar,
+          hp: this.formRegist.hp,
+          gender: this.formRegist.gender,
+          birth: this.formRegist.birth,
+          address: this.formRegist.address
+        }
       }
+      if(this.isConselor == true) {
+        form.user.role = 1
+      } 
+      
+  
+      this.api.register(form).subscribe((resp: any) => {
+        if(resp.code == 409)  {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: resp.msg
+          })
+          this.resRegist = false;
+          
+        } else {
+          this.resRegist = true;  
+        }
+        console.log(resp)});
     }
-    this.api.register(form).subscribe((res: any) => {
-      if(res.code == 409)  {
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: res.msg
-        })
-        this.resRegist = false
-      } else {
-        this.resRegist = true;  
-      }
-      console.log(res)});
+
+    
   }
 
   doSubmit(todo) {
@@ -149,7 +233,7 @@ export class LoginPage implements OnInit {
             this.doLogin()
             Swal.showLoading();
             timerInterval = setInterval(() => {
-            }, 100)
+            }, 3000)
           },
           onClose: () => {
             if(!this.resLogin) {
@@ -173,7 +257,7 @@ export class LoginPage implements OnInit {
             this.doRegist()
             Swal.showLoading();
             timerInterval = setInterval(() => {
-            }, 100)
+            }, 3000)
           },
           onClose: () => {
             if(this.resRegist) {

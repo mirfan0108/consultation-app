@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar mode="md" color="secondary">
+    <ion-row justify-content-center>
+      <ion-col size="1" align-self-start>
+        <ion-buttons>
+          <ion-button  fill="clear" slots="icon-only" (click)="closeModal()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+      <ion-col align-self-start>
+        <ion-title mode="md" style="margin-top:1%">Detail Konsultasi</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img [src]="detail.profile.avatar">
+    <ion-card-header>
+      <ion-card-title>Profil</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="6">
+          Nama Pengadu<br>
+          <ion-note>{{detail.profile.name}}</ion-note>
+        </ion-col>
+        <ion-col size="6" >
+          Tanggal Lahir <br>
+          <ion-note>{{normalizeDate(detail.profile.birth)}}</ion-note>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          Jenis Kelamin <br>
+          <ion-note>{{detail.profile.gender == "men" ? "Pria" : "Wanita"}}</ion-note>
+        </ion-col>
+        <!-- <ion-col size="6" >
+          Pekerjaan <br>
+          <ion-note>Developer</ion-note>
+        </ion-col> -->
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{detail.title}}</ion-card-title>
+      <ion-card-subtitle>{{detail.description}}</ion-card-subtitle>
+    </ion-card-header>
+    <!-- <ion-row justify-content-center>
+      <ion-button>Tambah Jadwal</ion-button>
+    </ion-row> -->
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="6">
+          Tanggal Konsultasi <br>
+          <ion-note color="secondary">20 Juni 2019</ion-note>
+        </ion-col>
+        <ion-col size="6" >
+          Jam <br>
+          <ion-note>13:00</ion-note>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          Konsultasi <br>
+          <ion-note color="secondary">Diterima</ion-note>
+        </ion-col>
+        <!-- <ion-col size="6" >
+          Cara <br>
+          <ion-note>Bertemu</ion-note>
+        </ion-col> -->
+      </ion-row>
+      <!-- <ion-item lines="none">
+        <ion-buttons slot="end">
+          <ion-button color="success">Beri Tindakan</ion-button>
+        </ion-buttons>
+      </ion-item> -->
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <!-- <ion-button color="danger" expand="full" (click)="generateCancellation()">Batalkan</ion-button> -->
+  
+</ion-footer>

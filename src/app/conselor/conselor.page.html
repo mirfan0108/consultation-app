@@ -1,0 +1,69 @@
+<ion-header >
+  <ion-toolbar  color="secondary">
+    <ion-segment  (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="list"  checked>
+        <ion-label>List Pengaduan</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="onschedule">
+        <ion-label>Jadwal</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="segmentToolbar == 'list'">
+    <ion-list *ngIf="appliedData.length > 0">
+      <ion-item *ngFor="let apply of appliedData">
+        <ion-avatar slot="start" *ngIf="apply.status == 0">
+          <img *ngIf="apply.profile.avatar" src="{{apply.profile.avatar}}">
+        </ion-avatar>
+        <ion-card-header *ngIf="apply.status == 0">
+          <ion-card-subtitle>
+            <ion-note>{{apply.title}}</ion-note>            
+          </ion-card-subtitle>
+          <ion-card-subtitle>{{apply.profile.name}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-buttons slot="end" *ngIf="apply.status == 0">
+          <ion-button color="secondary" (click)="openModal('complain',apply)">Detail</ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="segmentToolbar == 'onschedule'">
+    <ion-list>
+      <ion-item *ngFor="let conseling of conselingData">
+        <ion-avatar slot="start">
+          <img [src]="conseling.profile.avatar">
+        </ion-avatar>
+        <ion-card-header>
+            <ion-card-subtitle>{{conseling.title}}</ion-card-subtitle>
+            <ion-card-subtitle>
+              <ion-note>{{conseling.profile.name}}</ion-note>            
+            </ion-card-subtitle>
+        </ion-card-header>
+        <ion-buttons slot="end">
+          <ion-button color="secondary" (click)="openModal('conseling', conseling)">Detail</ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-segment>
+    <ion-segment-button (click)="navigateTo('user')">
+      <ion-icon name="person"></ion-icon>
+    </ion-segment-button>
+    <!-- <ion-segment-button (click)="navigateTo('user')">
+      <ion-icon name="chatboxes"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="onschedule">
+      <ion-icon name="time"></ion-icon>
+    </ion-segment-button> -->
+    <ion-segment-button value="logout" (click)="doLogout()">
+      <ion-icon name="backspace"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>

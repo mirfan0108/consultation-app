@@ -13,7 +13,6 @@ export class ProfileService {
   constructor(private  httpClient:  HttpClient) { }
 
   getProfile(userId) {
-    console.log(userId)
     return this.httpClient.get(`${ENV}/profile/${userId}`);
   }
 

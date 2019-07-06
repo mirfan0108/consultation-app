@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar mode="md" color="secondary">
+    <ion-row justify-content-center>
+      <ion-col size="1" align-self-start>
+        <ion-buttons>
+          <ion-button  fill="clear" slots="icon-only" (click)="closeModal()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+      <ion-col align-self-start>
+        <ion-title mode="md" style="margin-top:1%">Detail Pengaduan</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <img [src]="detail.profile.avatar">
+    <ion-card-header>
+      <ion-card-title>Profil</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="6">
+          Nama <br>
+          <ion-note>{{detail.profile.name}}</ion-note>
+        </ion-col>
+        <ion-col size="6" >
+          Lahir <br>
+          <ion-note>{{normalizeDate(detail.profile.birth)}}</ion-note>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          Jenis Kelamin <br>
+          <ion-note>{{detail.profile.gender == "men" ? "Pria" : "Wanita"}}</ion-note>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Alamat<br>
+          <ion-note>{{detail.profile.address}}</ion-note>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row justify-content-end>
+        <ion-button color="success" expand="block" (click)>Tambahkan Kontak</ion-button>
+        <ion-button color="secondary" expand="block">Pesan</ion-button>
+      </ion-row> -->
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{detail.title}}</ion-card-title>
+      <ion-card-subtitle>{{normalizeDate(detail.created_on)}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="6">
+          Tanggal Konsultasi <br>
+          <ion-note>20 Juni 2020</ion-note>
+        </ion-col>
+        <ion-col size="6" >
+          Jam <br>
+          <ion-note>09:00</ion-note>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Deskripsi Pengaduan :
+          <br><ion-note>
+            {{detail.description}}
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  
+
+  
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button color="danger" expand="block" (click)="generateCancellation()">Tolak</ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button color="secondary" expand="block" (click)="doAccept()">Terima</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

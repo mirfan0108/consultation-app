@@ -27,7 +27,7 @@ export class SchedulePage implements OnInit {
   }
 
   formConseling = {
-    patientId: localStorage.getItem('_ID'),
+    patientId: JSON.parse(localStorage.getItem("_USER"))._ID,
     description: '',
     title: ''
   }
@@ -119,12 +119,13 @@ export class SchedulePage implements OnInit {
     ]).then((result) => {
       console.log(result.value)
       if(result.value) {
+        let user = JSON.parse(localStorage.getItem('_USER'));
         if (result.value[0] != "" && result.value[1] != "" 
         && result.value[0] != " " && result.value[1] != " " ) {
           this.formConseling.title = result.value[0];
           this.formConseling.description = result.value[1];
           this.api.setSchedule({date: this.formApply.applyDate, time: this.formApply.clock, 
-            title: this.formConseling.title, description: this.formConseling.description, patientId: localStorage.getItem('_ID')})
+            title: this.formConseling.title, description: this.formConseling.description, patientId: user._ID})
           .subscribe(resp => console.log(resp))
           Swal.fire({
             title: 'All done!',

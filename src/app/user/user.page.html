@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="{{role == 0 ? 'primary' : 'secondary'}}">
     <ion-buttons>
       <ion-button fill="clear" (click)="navigateTo('home')">
         Kembali
@@ -12,9 +12,19 @@
 <ion-content>
   <ion-row justify-content-center padding>
     <ion-avatar>
-      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      <img [src]="dataProfile.avatar">
     </ion-avatar>
   </ion-row>
+  <ion-card-content>
+    <ion-row justify-content-center>
+      <ion-button fill="clear" (click)="doInputFile()">
+        <ion-icon name="reverse-camera"></ion-icon>
+      </ion-button>
+    </ion-row>
+      <ion-item hidden>
+        <input id="input-avatar" type="file"  (change)="changeListener($event)">
+      </ion-item>
+  </ion-card-content>
   <ion-list>
     <ion-list-header>
       Data Diri

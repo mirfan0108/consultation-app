@@ -2,3 +2,13 @@
     position: relative;
     padding: 10%;
 }
+.avatar-element {
+    position: relative;
+    width: 80%;
+    .btn-camera {
+        position: absolute;
+        left: 23%;
+        top: 50%;
+        font-size: 33px;
+    }
+}

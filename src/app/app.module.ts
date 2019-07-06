@@ -10,14 +10,16 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TabsPage } from './tabs/tabs.page';
 import { HttpClientModule } from '@angular/common/http';
+import { ComplainDetailPage } from './modal/complain-detail/complain-detail.page';
 
 @NgModule({
   declarations: [
     AppComponent, 
     TabsPage],
-  entryComponents: [],
+  entryComponents: [
+  ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     IonicModule.forRoot(), 
     AppRoutingModule, 
     HttpClientModule],

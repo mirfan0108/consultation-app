@@ -15,7 +15,9 @@ const routes: Routes = [
   { path: 'notification', loadChildren: './notification/notification.module#NotificationPageModule' },
   { path: 'schedule', loadChildren: './schedule/schedule.module#SchedulePageModule' },
   { path: 'counselor', loadChildren: './schedule/counselor/counselor.module#CounselorPageModule' },
-  { path: 'complaint', loadChildren: './complaint/complaint.module#ComplaintPageModule' }
+  { path: 'complaint', loadChildren: './complaint/complaint.module#ComplaintPageModule' },
+  { path: 'conselor', loadChildren: './conselor/conselor.module#ConselorPageModule', canActivate:[OauthGuard] },
+  { path: 'profile-detail', loadChildren: './modal/profile-detail/profile-detail.module#ProfileDetailPageModule' }
 ];
 
 @NgModule({
