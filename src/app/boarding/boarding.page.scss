@@ -1,14 +1,27 @@
 .header-slide{
     position: relative;
-    margin-top: 40%;
-    margin-left: 30%;
-    margin-bottom: 30%;
+    // padding: 5%;
+    margin-top: 30px;
+    // margin-top: 40%;
+    // margin-left: 30%;
+    // margin-bottom: 30%;
     img{
-        width: 65%;
+        width: 300px;
     }
+}
+.slide-boarding {
+    margin-top: 15%;
+    margin-bottom: 10%;
+    font-size: 12pt;
 }
 .text-slide{
     position: relative;
     margin-left: 8%;
     margin-top: 7%;
+}
+
+.bg-boarding {
+    // position: relative;
+    --background: url('../../assets/images/bg_app.png') 0 0/100% 100% no-repeat;
+    
 }

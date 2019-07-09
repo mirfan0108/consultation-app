@@ -5,17 +5,22 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ForgetPage } from './forget.page';
-import { ForgetPageRoutingModule } from './forget-routing.module';
+import { ChangePasswordPage } from './change-password.page';
 
+const routes: Routes = [
+  {
+    path: '',
+    component: ChangePasswordPage
+  }
+];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ForgetPageRoutingModule
+    RouterModule.forChild(routes)
   ],
-  declarations: [ForgetPage]
+  declarations: [ChangePasswordPage]
 })
-export class ForgetPageModule {}
+export class ChangePasswordPageModule {}

@@ -1,39 +1,45 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title color="primary">Get Starter</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content>
-  <div class="header-slide">
-    <img [src]="logo" alt="LOGO">
+<ion-content class="bg-boarding">
+  <div style="color: white">
+    <div class="header-slide">
+      <ion-row justify-content-center>
+        <img [src]="logo" alt="LOGO">
+      </ion-row>
+    </div>
+    <div class="slide-boarding">
+      <ion-slides pager="true">
+        <ion-slide>
+          <div style="padding: 15px;">
+            <p style="font-family: primaryFont">Kemudahan dalam melakukan konseling ataupun pengaduan terhadap kekerasan seksual</p>
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div style="padding: 15px;">
+            <p style="font-family: primaryFont">Keamanan privasi terjaga</p>
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <ion-card-content>
+            <div style="padding: 0; width: 100%;">
+              <p style="font-family: primaryFont">Terhubung dengan konselor terpercaya dan ahli dalam bidang ini</p>
+              <!-- <ion-button expand="block" fill="clear" (click)="navigateTo('Home')">Next</ion-button> -->
+            </div><br>
+          </ion-card-content>
+        </ion-slide>
+      </ion-slides>
+    </div>
+    <ion-row>
+      <ion-col size="3"></ion-col>
+      <ion-col size="6">
+        <ion-button mode="ios" expand="block" color="warning" (click)="navigateTo('Home')">MULAI</ion-button>
+      </ion-col>
+      <ion-col size="3"></ion-col>
+    </ion-row>
   </div>
-  <ion-slides pager="true">
-    <ion-slide>
-      <div style="padding: 15px;">
-        <p>Kemudahan dalam melakukan konseling ataupun pengaduan terhadap kekerasan seksual</p>
-      </div>
-    </ion-slide>
-    <ion-slide>
-      <div style="padding: 15px;">
-        <p>Keamanan privasi terjaga</p>
-      </div>
-    </ion-slide>
-    <ion-slide>
-      <ion-card-content>
-        <div style="padding: 0; width: 100%;">
-          <p>Terhubung dengan konselor terpercaya dan ahli dalam bidang ini</p>
-          <ion-button expand="block" fill="clear" (click)="navigateTo('Home')">Next</ion-button>
-        </div><br>
-      </ion-card-content>
-    </ion-slide>
-  </ion-slides>
 </ion-content>
 
-<ion-footer>
-  <ion-row>
-    <ion-col>
-      <ion-button expand="block" fill="clear" (click)="navigateTo('Home')">LEWATI</ion-button>
-    </ion-col>
-  </ion-row>
-</ion-footer>

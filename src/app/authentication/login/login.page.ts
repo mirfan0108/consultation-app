@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Swal  from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/auth/user';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -43,17 +43,31 @@ export class LoginPage implements OnInit {
   }
   msgErr = "";
 
+  validatorRegist = {
+    email: {valid: false, msg: '' },
+    name: {valid: false, msg: '' },
+    birth: {valid: false, msg: '' },
+    hp: {valid: false, msg: '' },
+    address: {valid: false, msg: '' },
+    gender: {valid: false, msg: '' },
+    avatar: {valid: false, msg: '' },
+    password: {valid: false, msg: '' },
+    confirmPassword: {valid: false, msg: '' }
+  }
+
+
   formLogin = {
     username: '',
     password: ''
   }
+
   resLogin = false;
   resRegist = false;
   next: string;
   constructor(private formBuilder: FormBuilder, private api : AuthService,
     private route: ActivatedRoute, private router: Router, ) { 
     this.loading = false;
-    this.logo = '../../../assets/images/logo.png'
+    this.logo = '../../../assets/images/logo-cons.png'
   }
 
   ngOnInit() {
@@ -90,17 +104,18 @@ export class LoginPage implements OnInit {
   doLogin(){
     if(this.formLogin.username == '' || this.formLogin.username == ' ' || this.formLogin.username == null) {
       this.errorMsgLogin.username = true;
-      // Swal.fire('Oops...', 'Username tidak boleh kosong', 'error')
+      Swal.fire('Oops...', 'Username tidak boleh kosong', 'error')
     } else {
       this.errorMsgLogin.username = false;
     }
     if (this.formLogin.password == '' || this.formLogin.password == ' ' || this.formLogin.password == null) {
       this.errorMsgLogin.password = true;
+      Swal.fire('Oops...', 'Password tidak boleh kosong', 'error')
     } else {
       this.errorMsgLogin.password = false;
       if (this.formLogin.password.length < 6) {
         this.errorMsgLogin.passwordLength = true;
-          // Swal.fire('Oops...', 'Password tidak boleh kosong', 'error')
+          Swal.fire('Oops...', 'Password tidak boleh Kurang', 'error')
       } else {
         this.errorMsgLogin.passwordLength = false;
       }
@@ -142,14 +157,9 @@ export class LoginPage implements OnInit {
   }
 
   async doRegist() {
+    console.log(this.file)
     if(this.file) {
-
-      await this.api.uploadAvatar(this.file).subscribe((res: any) => {
-        if(res.name) {
-          this.formRegist.avatar = res.name;
-        }
-        console.log(res.name)
-        let form = {
+      let form = {
           user: {
             email: this.formRegist.email,
             password: this.formRegist.confirmPassword,
@@ -157,19 +167,19 @@ export class LoginPage implements OnInit {
           },
           profile: {
             name: this.formRegist.name,
-            avatar: this.formRegist.avatar,
             hp: this.formRegist.hp,
             gender: this.formRegist.gender,
             birth: this.formRegist.birth,
             address: this.formRegist.address
-          }
+          },
+          avatar: this.file
         }
         if(this.isConselor == true) {
           form.user.role = 1
         } 
         
     
-        this.api.register(form).subscribe((resp: any) => {
+      await  this.api.register(form).subscribe((resp: any) => {
           if(resp.code == 409)  {
             Swal.fire({
               type: 'error',
@@ -182,7 +192,13 @@ export class LoginPage implements OnInit {
             this.resRegist = true;  
           }
           console.log(resp)});
-      })
+      // await this.api.uploadAvatar(this.file).subscribe((res: any) => {
+      //   if(res.name) {
+      //     this.formRegist.avatar = res.name;
+      //   }
+      //   console.log(res.name)
+        
+      // })
     } else {
       let form = {
         user: {
@@ -218,8 +234,58 @@ export class LoginPage implements OnInit {
         }
         console.log(resp)});
     }
+  }
 
+  checkRegist() {
+    let msgErr = '';
+    let validations_form = this.formBuilder.group({
+      name: new FormControl(this.formRegist.name, Validators.required),
+      email: new FormControl(this.formRegist.email, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])),
+      password: new FormControl(this.formRegist.password, Validators.compose([
+        Validators.minLength(6)])),
+    });
+    if(!validations_form.controls.name.valid) {
+      msgErr += "<small style='color:red'>* Nama tidak boleh kosong</small><br>"
+      this.validatorRegist.name.msg = "Nama tidak boleh kosong";
+    }
+    if(!validations_form.controls.email.valid) {
+      msgErr += "<small style='color:red'>* Email tidak boleh kosong atau inputan tidak sesuai dengan format Email</small></br>";
+      this.validatorRegist.email.msg = "Email tidak boleh kosong atau inputan tidak sesuai dengan format Email";
+    }
+    if(!validations_form.controls.password.valid) {
+      msgErr += "<small style='color:red'>* Password minimal 6 karakter</small></br>"
+      this.validatorRegist.password.msg = "Password minimal 6 karakter";
+    }  
+    if(validations_form.valid) {
+      this.doSubmit('signin')
+      
+    } else {
+      Swal.fire({
+        title: 'Opss..',
+        type: 'error',
+        html: msgErr,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        showConfirmButton: false,
+        cancelButtonAriaLabel: 'Tutup',
+      })
+      console.log("Form = "+ false)
+    }
+    console.log(validations_form)
+  }
+
+  doCheck(todo) {
+    switch (todo) {
+      case 'signup':
+        this.checkRegist();
+        break;
     
+      default:
+        break;
+    }
   }
 
   doSubmit(todo) {
@@ -274,7 +340,16 @@ export class LoginPage implements OnInit {
         break;
     }
     let timerInterval;
+  }
+
+  navigateTo(page: 'signup' | 'forget') {
+    switch (page) {
+      case 'signup':
+        this.router.navigateByUrl('registration')
+        break;
     
-    
+      default:
+        break;
+    }
   }
 }

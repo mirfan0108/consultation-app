@@ -17,7 +17,11 @@ const routes: Routes = [
   { path: 'counselor', loadChildren: './schedule/counselor/counselor.module#CounselorPageModule' },
   { path: 'complaint', loadChildren: './complaint/complaint.module#ComplaintPageModule' },
   { path: 'conselor', loadChildren: './conselor/conselor.module#ConselorPageModule', canActivate:[OauthGuard] },
-  { path: 'profile-detail', loadChildren: './modal/profile-detail/profile-detail.module#ProfileDetailPageModule' }
+  { path: 'profile-detail', loadChildren: './modal/profile-detail/profile-detail.module#ProfileDetailPageModule' },
+  { path: 'change-password', loadChildren: './authentication/change-password/change-password.module#ChangePasswordPageModule' },
+  { path: 'verify', loadChildren: './authentication/verify/verify.module#VerifyPageModule' },
+  { path: 'reset-password', loadChildren: './authentication/reset-password/reset-password.module#ResetPasswordPageModule' }
+
 ];
 
 @NgModule({

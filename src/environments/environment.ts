@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl:'http://localhost:8080/api',
   // apiUrl: 'https://beckend-conseling.herokuapp.com/api',
-  imageUrl: 'http://localhost:8080/media/assets/avatars'
+  imageUrl: 'https://beckend-conseling.herokuapp.com/media/assets/avatars'
 };
 
 /*

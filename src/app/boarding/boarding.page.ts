@@ -11,10 +11,14 @@ export class BoardingPage implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.logo = '../../assets/images/logo.png'
+    if(localStorage.getItem('starter')) {
+      this.router.navigateByUrl('/home');
+    }
+    this.logo = '../../assets/images/logo-cons.png'
   }
 
   navigateTo(page: string){
+    localStorage.setItem('starter', 'true');
     console.log('tes')
     switch (page) {
       case 'Home':

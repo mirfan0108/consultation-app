@@ -11,14 +11,26 @@ import { async } from 'q';
   providedIn: 'root'
 })
 export class AuthService {
-  AUTH_SERVER_ADDRESS:  string  =  'https://beckend-conseling.herokuapp.com';
+  AUTH_SERVER_ADDRESS:  string  =  'http://localhost:8080';
   authSubject  =  new  BehaviorSubject(false);
   
   constructor(private  httpClient:  HttpClient) { }
 
 
   register(newUser: any) {
-    return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/api/regist`, newUser).pipe(
+    console.log(newUser)
+    let form = new FormData();
+    form.append("avatar", newUser.avatar, newUser.avatar.name);
+    form.append("email", newUser.email);
+    form.append("role", newUser.role);
+    form.append("password", newUser.password);
+    form.append("name", newUser.name);
+    form.append("hp", newUser.hp);
+    form.append("gender", newUser.gender);
+    form.append("birth", newUser.birth);
+    form.append("address", newUser.address);
+    
+    return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/api/regist`, form).pipe(
       tap(async (res:  AuthResponse ) => {
         let user = res[0]
         if (user._id) {
@@ -53,7 +65,7 @@ export class AuthService {
     };
     let form = new FormData();
     form.append("avatar", avatar, avatar.name);
-    return this.httpClient.post(`http://localhost:8080/api/uploads`, form)
+    return this.httpClient.post(`http://localhost:8080/api`, form)
       .pipe(
         tap(async res => res)
       )
@@ -65,7 +77,7 @@ export class AuthService {
         'Content-Type':  'application/json',
       })
     };
-    return this.httpClient.delete(`http://localhost:8080/api/image/`+name)
+    return this.httpClient.delete(`https://beckend-conseling.herokuapp.com/api/image/`+name)
       .pipe(
         tap(async res => res)
       )
