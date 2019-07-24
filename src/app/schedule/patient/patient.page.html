@@ -10,32 +10,56 @@
 </ion-header>
 
 <ion-content>
-  <ion-item-group *ngFor="let dates of complaintsGroup">
+  <ion-row justify-content-start padding *ngIf="segmentSchedule == 'new'">
+    Tanggal Konseling
+  </ion-row>
+  
+  <div class="w3-container" *ngIf="segmentSchedule == 'new'">
+      <ion-card>
         <ion-card-content>
-          <ion-row justify-content-center>
-            <ion-col size="4">
-              <div class="divider"></div>
-            </ion-col>
-            <ion-col size="4" >
-              <p style="text-align: center">
-                  {{dates.date}}
-              </p>
-            </ion-col>
-            <ion-col size="4">
-              <div class="divider"></div>
-            </ion-col>
-
-          </ion-row>
+          <ion-calendar (click)="checkSchedule()" [format]="'YYYY-MM-DD'" [(ngModel)]="formApply.applyDate">
+          </ion-calendar>
         </ion-card-content>
-        <ion-item *ngFor="let apply of dates.data" (click)="openModal('complain',apply)">
-          <ion-avatar slot="start">
-              <img  src="{{apply.profile.avatar}}">
-          </ion-avatar>
-          <ion-label>
-              {{apply.subyek}} <br>
-              <small style="font-size: 8pt">{{apply.description}}</small>
-          </ion-label>
-          <ion-note slot="end">{{apply.created_on.split('T')[1].split(':')[0]}}: {{apply.created_on.split('T')[1].split(':')[1]}}</ion-note>
-        </ion-item>
-      </ion-item-group>
+      </ion-card>
+  </div>
+
+
+  <ion-row justify-content-start padding *ngIf="segmentSchedule == 'new'">
+    Jam Konseling
+  </ion-row>
+  <ion-row justify-content-start *ngIf="segmentSchedule == 'new'">
+    <ion-col size="3" *ngFor="let clock of clocks" (click)="setTime(clock)">
+      <ion-card color="{{clock.avail ? 'primary' : 'danger'}}">
+        <ion-card-content>
+          <p style="font-size: 8pt">
+            {{clock.clock}}
+          </p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-card-content *ngIf="segmentSchedule == 'new'">
+
+    <ion-button expand="block" color="primary" (click)="settingSchedule()"
+    disabled="{{formApply.applyDate == '' || formApply.clock == ''}}">Atur</ion-button>
+  </ion-card-content>
+    
+
+  <ion-row justify-content-start *ngIf="segmentSchedule == 'new'">
+    <ion-item-divider>
+      Keterangan
+    </ion-item-divider>
+  </ion-row>
+  <ion-card-content *ngIf="segmentSchedule == 'new'">
+    <ion-row>
+      <ion-col>
+        <ion-badge color="primary">Tersedia</ion-badge>
+      </ion-col>
+      <ion-col>
+        <ion-badge color="danger">Tidak Tersedia</ion-badge>
+      </ion-col>
+    </ion-row>
+      
+  </ion-card-content>
 </ion-content>
