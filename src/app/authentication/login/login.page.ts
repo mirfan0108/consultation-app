@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/auth/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery'
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-login',
@@ -145,6 +146,7 @@ export class LoginPage implements OnInit {
             }
           }
         } else {
+          this.msgErr = "Alamat email atau password tidak sesuai"
           this.resLogin = false;
         }
         console.log(res);
@@ -295,9 +297,9 @@ export class LoginPage implements OnInit {
           title: '<strong>Mohon Tunggu</strong>',
           showConfirmButton: false,
           timer: this.delay,
-          onBeforeOpen: () => {
-            this.doLogin()
+          onBeforeOpen: async () => {
             Swal.showLoading();
+            await this.doLogin()
             timerInterval = setInterval(() => {
             }, 3000)
           },
@@ -306,7 +308,7 @@ export class LoginPage implements OnInit {
               Swal.fire({
                 type: 'error',
                 title: 'Oops...',
-                text: 'Cek kembali masukan anda!'
+                text: this.msgErr
               })
             }
             clearInterval(timerInterval)
@@ -347,7 +349,9 @@ export class LoginPage implements OnInit {
       case 'signup':
         this.router.navigateByUrl('registration')
         break;
-    
+      case 'forget': 
+        this.router.navigateByUrl('forget/change-password')
+        break;
       default:
         break;
     }

@@ -4,9 +4,10 @@ import Swal  from 'sweetalert2';
 import { SchedulerService } from '../services/scheduler.service';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ConselorService } from '../services/conselor.service';
 
-
-
+import { environment } from 'src/environments/environment'
+const MEDIA = environment.imageUrl;
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.page.html',
@@ -20,7 +21,7 @@ export class SchedulePage implements OnInit {
     {clock:'17:00', avail: 1},{clock:'18:00', avail: 1},{clock:'19:00', avail: 1}
   ];
   constructor(public toastController: ToastController, private api: SchedulerService,
-    private router: Router) { }
+    private router: Router, private complaintApi: ConselorService) { }
   formApply = {
     applyDate: '',
     clock: ''
@@ -33,10 +34,13 @@ export class SchedulePage implements OnInit {
   }
 
   conselingApp = [];
+  complaints: any;
+  segmentSchedule: 'new' | 'complaint';
+  profile: any;
 
-  segmentSchedule: 'new' | 'history';
-
+  logo: any;
   ngOnInit() {
+    this.logo = '../../assets/images/logo-cons.png';
     this.segmentSchedule = 'new';
     this.formApply.applyDate = this.formatDate()
     var fromClock = 8;
@@ -58,6 +62,20 @@ export class SchedulePage implements OnInit {
       }, 500)
     });
     this.updateConseling()
+    this.complaintApi.getPatientComplain().subscribe((res: any) => {
+      
+      this.complaints = res.data
+      if(res.profile.avatar == "") {
+        if(res.profile.gender == "men") {
+          res.profile.avatar = "../../assets/images/default-men.jpg"
+        } else {
+          res.profile.avatar = "../../assets/images/default-women.jpg"
+        }
+      } else {
+        res.profile.avatar = MEDIA+"/media/"+res.profile._id;
+      }
+      this.profile = res.profile
+    })
   }
 
 
@@ -79,6 +97,9 @@ export class SchedulePage implements OnInit {
   }
 
   segmentChanged($event){
+    this.complaintApi.getPatientComplain().subscribe((res: any) => {
+      this.complaints = res.data
+    })
     this.segmentSchedule = $event.detail.value;
   }
 
@@ -191,6 +212,55 @@ export class SchedulePage implements OnInit {
       this.conselingApp = res.data;
       console.log(this.conselingApp)
     });
+  }
+
+
+  formComplaint = {
+    subyek: "",
+    description: "",
+    patientId: "",
+  }
+
+  generateComplaint() {
+    Swal.mixin({
+      input: 'text',
+      confirmButtonText: 'Selanjutnya',
+      showCancelButton: true,
+      progressSteps: ['1', '2']
+    }).queue([
+      {
+        title: 'Subjek',
+        text: 'Subjek laporan anda.'
+      },
+      {
+        title: 'Laporan',
+        text: 'Apa yang anda ingin laporkan ?'
+      }
+    ]).then((result) => {
+      let storeLocal = localStorage.getItem('_USER');
+      let id = JSON.parse(storeLocal)._ID;
+      this.formComplaint.patientId = id;
+      if(result.value) {
+        this.formComplaint.subyek = result.value[0];
+        this.formComplaint.description = result.value[1];
+        this.complaintApi.postComplain(this.formComplaint).subscribe((res: any) => {
+          if(res.code == 200) {
+            Swal.fire({
+              title: 'Done!',
+              confirmButtonText: 'Pengaduan anda sudah terkirim'
+            })
+          } else {
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Maaf server sedang bermasalah, silahkan coba kembali beberapa saat'
+            })
+          }
+        })
+      }
+      console.log(this.formComplaint)
+      
+    })
   }
 
   

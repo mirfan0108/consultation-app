@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar  color="secondary">
+    <ion-segment scrollable (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="mon"  checked>
+        <ion-label>Senen</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="tue">
+        <ion-label>Selasa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="wed">
+        <ion-label>Rebo</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="thu">
+        <ion-label>Kemis</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="fri">
+        <ion-label>Jumat</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item-divider>
+    <ion-label>Pengaturan</ion-label>
+    <ion-note slot="end" padding>
+      Atur Jam Ketersediaan Anda
+    </ion-note>
+  </ion-item-divider>
+
+  <ion-card>
+
+    <ion-card-header>
+      <ion-card-subtitle>
+        Durasi Konsultasi 120 menit, silahkan pilih waktu ketersediaan anda.
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        Keterangan :
+        <ion-item lines="none">
+          <ion-badge color="secondary">Terpilih</ion-badge>
+          <ion-badge color="dark" slot="end">Kosong</ion-badge>
+        </ion-item>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+
+    <ion-card-content>
+      
+      <ion-row>
+        <ion-col size="3" *ngFor="let time of times1">
+          <ion-button color="{{time.color}}" (click)="timeActionClick(1, time)">{{time.time}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3" *ngFor="let time of times2">
+          <ion-button color="{{time.color}}" (click)="timeActionClick(2, time)">{{time.time}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3" *ngFor="let time of times3">
+          <ion-button color="{{time.color}}" (click)="timeActionClick(3, time)" disabled="{{time.disabled}}">{{time.time}}</ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <ion-button expand="block">Atur Ulang</ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button color="warning" expand="block">Simpan</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-segment>
+    <ion-segment-button (click)="navigateTo('user')">
+      <ion-icon name="person"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button (click)="navigateTo('conselor')">
+      <ion-icon name="home"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="onschedule">
+      <ion-icon name="time"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="logout" (click)="doLogout()">
+      <ion-icon name="backspace"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>

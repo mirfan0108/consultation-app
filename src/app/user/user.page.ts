@@ -58,12 +58,12 @@ export class UserPage implements OnInit {
       this.formUpdate = this.dataProfile;
       if(profile.avatar == "") {
         if(profile.gender == "men") {
-          this.dataProfile.avatar = MEDIA+"/default-men.jpg"
+          this.dataProfile.avatar = "../../assets/images/default-men.jpg"
         } else {
-          this.dataProfile.avatar = MEDIA+"/default-women.jpg"
+          this.dataProfile.avatar = "../../assets/images/default-women.jpg"
         }
       } else {
-        this.dataProfile.avatar = MEDIA+"/"+profile.avatar;
+        this.dataProfile.avatar = MEDIA+"/media/"+profile._id;
       }
     })
   }

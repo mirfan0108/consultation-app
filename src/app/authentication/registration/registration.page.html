@@ -4,9 +4,19 @@
   </ion-toolbar>
 </ion-header> -->
 
-<ion-content>
+<ion-content class="bg-regist">
+  <ion-toolbar  color="secondary">
+    <ion-segment (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="0"  checked>
+        <ion-label>Pasien</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        <ion-label>Konsultan</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
   <div class="regist-content">
-    <ion-card>
+    <!-- <ion-card>
       <ion-item lines="none">
         <ion-label>Daftar Sebagai Konselor</ion-label>
         <ion-toggle [(ngModel)]="isConselor" ></ion-toggle>
@@ -14,7 +24,7 @@
       <ion-card-content>
         <ion-note>Anda Mendaftar sebagai Konselor</ion-note>
       </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 
     <ion-row justify-content-center>
       <div class="avatar-element">
@@ -26,53 +36,82 @@
       <ion-item hidden>
         <input id="input-avatar" type="file"  (change)="changeListener($event)">
       </ion-item>
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input type="email" [(ngModel)]="formRegist.email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Nama Lengkap</ion-label>
-        <ion-input type="text" [(ngModel)]="formRegist.name"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label >Tanggal Lahir</ion-label>
-        <ion-datetime [(ngModel)]="formRegist.birth" display-format="MM-DD-YYYY"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">No. Hp</ion-label>
-        <ion-input type="number" [(ngModel)]="formRegist.hp" ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Alamat</ion-label>
-        <ion-textarea type="text" [(ngModel)]="formRegist.address"></ion-textarea>
-      </ion-item>
-      <ion-list>
-        <ion-radio-group  [(ngModel)]="formRegist.gender" >
-          <ion-list-header>
-            Jenis Kelamin
-          </ion-list-header>
+      <div style="margin: 5px;">
+        <ion-item>
+          <ion-label><ion-icon name="mail"></ion-icon></ion-label>
+          <ion-input type="email" placeholder="Email" [(ngModel)]="formRegist.email"></ion-input>
+        </ion-item>
+      </div>
+      <div style="margin: 5px;">
           <ion-item>
-            <ion-label>Pria</ion-label>
-            <ion-radio value="men"></ion-radio>
+            <ion-label><ion-icon name="person"></ion-icon></ion-label>
+            <ion-input type="text" placeholder="Nama Lengkap" [(ngModel)]="formRegist.name"></ion-input>
           </ion-item>
+      </div>
+      <div style="margin: 5px;">
+        <ion-item>
+          <ion-label ><ion-icon name="calendar"></ion-icon></ion-label>
+          <ion-datetime [(ngModel)]="formRegist.birth" placeholder="Tanggal Lahir" display-format="MM-DD-YYYY"></ion-datetime>
+        </ion-item>
+      </div>
+      <div style="margin: 5px;">
+        <ion-item>
+          <ion-label><ion-icon name="call"></ion-icon></ion-label>
+          <ion-input type="number" placeholder="Nomor Hp" [(ngModel)]="formRegist.hp" ></ion-input>
+        </ion-item>
+      </div>
+      <div style="margin: 5px">
           <ion-item>
-            <ion-label>Wanita</ion-label>
-            <ion-radio value="women"></ion-radio>
+            <ion-label><ion-icon name="home"></ion-icon></ion-label>
+            <ion-input type="text" placeholder="Alamat" [(ngModel)]="formRegist.address"></ion-input>
           </ion-item>
-        </ion-radio-group>
-      </ion-list>
-      <ion-item>
-        <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" [(ngModel)]="formRegist.password"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">ConfirmPassword</ion-label>
-        <ion-input type="password" [(ngModel)]="formRegist.confirmPassword"></ion-input>
-      </ion-item>
-      <ion-button expand="block" color="primary" (click)="doCheck('signup')" 
+      </div>
+      <div style="margin: 5px">
+        <ion-list>
+          <ion-radio-group  [(ngModel)]="formRegist.gender" >
+            <ion-list-header>
+              Jenis Kelamin
+            </ion-list-header>
+            <ion-item>
+              <ion-label>Pria</ion-label>
+              <ion-radio value="men"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Wanita</ion-label>
+              <ion-radio value="women"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </div>
+      <div style="margin: 5px">
+        <ion-item>
+          <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+          <ion-input type="password" placeholder="Kata Sandi" [(ngModel)]="formRegist.password"></ion-input>
+        </ion-item>
+      </div>
+      <div style="margin: 5px">
+        <ion-item>
+          <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+          <ion-input placeholder="Konfirmasi Kata Sandi" type="password" [(ngModel)]="formRegist.confirmPassword"></ion-input>
+        </ion-item>
+      </div>
+
+      <div style="margin: 5px">
+        <ion-item>
+          <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+          <ion-input placeholder="Konfirmasi Kata Sandi" type="password" [(ngModel)]="formRegist.confirmPassword"></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-button expand="block" color="warning" (click)="checkRegist()" 
       disabled="{{formRegist.email == '' || formRegist.name == '' 
       || formRegist.hp == '' || formRegist.address == '' || formRegist.password == ''
       || formRegist.password != formRegist.confirmPassword}}">Daftar</ion-button>
     </ion-card-content>
+    <div style="margin: 2px">
+      <ion-row justify-content-center>
+        <a href="javascript:void(0)" (click)="navigateTo('login')" style="color: white">Masuk</a>
+      </ion-row>
+    </div>
   </div>
 </ion-content>

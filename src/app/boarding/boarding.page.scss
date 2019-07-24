@@ -10,8 +10,8 @@
     }
 }
 .slide-boarding {
-    margin-top: 15%;
-    margin-bottom: 10%;
+    // margin-top: 15%;
+    // margin-bottom: 10%;
     font-size: 12pt;
 }
 .text-slide{
@@ -25,3 +25,11 @@
     --background: url('../../assets/images/bg_app.png') 0 0/100% 100% no-repeat;
     
 }
+.footer-boarding {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+ }

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import Swal  from 'sweetalert2';
 import { ConselorService } from 'src/app/services/conselor.service';
+import { MiniServicesService } from 'src/app/services/mini-services.service';
 
 @Component({
   selector: 'app-complain-detail',
@@ -10,13 +11,14 @@ import { ConselorService } from 'src/app/services/conselor.service';
 })
 export class ComplainDetailPage implements OnInit {
   @Input() detail: any;
-  constructor(private modalCtrl: ModalController, private api: ConselorService) { }
+  title = "";
+  constructor(private modalCtrl: ModalController, private api: ConselorService, private apiMini: MiniServicesService) { }
 
   ngOnInit() {
     console.log(this.detail)
     let tempBirth = this.detail.profile.birth.split("T");
     console.log(tempBirth)
-
+    this.getCategory()
   }
 
   closeModal() {
@@ -63,19 +65,19 @@ export class ComplainDetailPage implements OnInit {
   doAccept() {
     let MyId = JSON.parse(localStorage.getItem("_USER"));
     let form = {
-      _id: this.detail._id,
-      status: 1,
-      title: this.detail.title,
-      description: this.detail.description,
-      scheduleId: this.detail.scheduleId,
-      patientId: this.detail.patientId,
       conselorId: MyId._ID,
-      created_on: this.detail.created_on
+      created_on: this.detail.created_on,
+      description: this.detail.description,
+      patientId: this.detail.patientId,
+      status: 1,
+      _id: this.detail._id,
+      subyek: this.detail.subyek,
+      
     }
+    console.log(this.detail)
     this.api.approveComplain(form).subscribe(res => console.log(res));
     Swal.fire(
       'Diterima!',
-      'Pengaduan ini akan dimasukan kedalam penjadwalan!',
       'success',
     )
     setTimeout(() => {
@@ -130,5 +132,12 @@ export class ComplainDetailPage implements OnInit {
     return dateText;
   }
 
+  getCategory() {
+    this.apiMini.getCategory(this.detail.category_id)
+    .subscribe((res: any) => {
+      this.title = res.data.category
+      console.log(this.title)
+    })
+  }
   
 }

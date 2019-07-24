@@ -44,7 +44,7 @@
     </div>
 
     <div style="margin-top: 5px; text-align: right">
-      <small style="color:white">Lupa kata sandi?</small>
+      <a href="javascript:void(0)" (click)="navigateTo('forget')"><small style="color:white">Lupa kata sandi?</small></a>
       <div style="margin-top: 25px;">
         <ion-button expand="block" color="warning" (click)="doSubmit('signin')" 
         disabled="{{formLogin.password == '' || formLogin.username == ''}}">

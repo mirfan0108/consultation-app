@@ -7,22 +7,22 @@
 <ion-content class="bg-verify">
   <h2 style="color: white; text-align: center">Konfirmasi</h2>
   <ion-row justify-content-center padding>
-    <a href="javascript:void(0)" style="color:white">Tidak mendapatkan email ?</a>
+    <a href="javascript:void(0)" style="color:white" (click)="navigateTo('send')">Tidak mendapatkan email ?</a>
   </ion-row> 
     <div class="centered">
       <ion-item>
-        <ion-input type="number" placeholder="Masukan kode konfirmasi"></ion-input>
+        <ion-input type="text" placeholder="Masukan kode konfirmasi" [(ngModel)]="form.code"></ion-input>
       </ion-item>
 
       <ion-row justify-content-center padding>
-        <a href="javascript:void(0)" style="color:white">Kembali ke halaman login</a>
+        <a href="javascript:void(0)" style="color:white" (click)="navigateTo('login')">Kembali ke halaman login</a>
       </ion-row>
     </div>
     <div class="footer-ch-password">
       <ion-row justify-content-center>
         <ion-col size="1"></ion-col>
         <ion-col size="10">
-          <ion-button mode="ios" expand="block" color="warning">KIRIM</ion-button>
+          <ion-button mode="ios" expand="block" color="warning" (click)="doVerify()">KIRIM</ion-button>
         </ion-col>
         <ion-col size="1"></ion-col>
       </ion-row>

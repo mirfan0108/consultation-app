@@ -6,40 +6,70 @@
 
 <ion-content class="bg-boarding">
   <div style="color: white">
-    <div class="header-slide">
-      <ion-row justify-content-center>
-        <img [src]="logo" alt="LOGO">
-      </ion-row>
-    </div>
-    <div class="slide-boarding">
+    
+    <div class="slide-boarding footer-boarding">
       <ion-slides pager="true">
         <ion-slide>
+          <!-- <div class="header-slide">
+            
+          </div> -->
+          <div style="padding: 15px; margin-top: 25%;">
+            <ion-row justify-content-center>
+                <img [src]="logo" alt="LOGO">
+            </ion-row>
+            <ion-card-content>
+              <p style="font-family: primaryBold; margin-bottom: 5%; margin-top: 45%;">Aplikasi Pengaduan dan Konseling Online MCR PKBI Bandung</p>
+            </ion-card-content>
+          </div>
+        </ion-slide>
+        <ion-slide>
+            <div style="padding: 15px;">
+              <ion-card-content>
+                <b style="font-family: primaryBold">DIMANAPUN DAN KAPANPUN</b>
+              </ion-card-content>
+              <ion-row justify-content-center>
+                  <img [src]="img1" alt="LOGO">
+              </ion-row>
+              <ion-card-content>
+                <p style="font-family: primaryBold; margin-bottom: 5%; margin-top: 15%;">Anda dapat melakukan pengaduan dan konseling dimanapun dan kapanpun</p>
+              </ion-card-content>
+            </div>
+        </ion-slide>
+        <ion-slide>
           <div style="padding: 15px;">
-            <p style="font-family: primaryFont">Kemudahan dalam melakukan konseling ataupun pengaduan terhadap kekerasan seksual</p>
+              <ion-card-content>
+                <b style="font-family: primaryBold">ATUR WAKTU KONSELING ANDA</b>
+              </ion-card-content>
+            <ion-row justify-content-center>
+                <img [src]="img2" alt="LOGO">
+            </ion-row>
+            <ion-card-content>
+              <p style="font-family: primaryBold; margin-bottom: 5%; margin-top: 15%;">Atur jadwal konseling dengan mudah</p>
+            </ion-card-content>
           </div>
         </ion-slide>
         <ion-slide>
           <div style="padding: 15px;">
-            <p style="font-family: primaryFont">Keamanan privasi terjaga</p>
+            <ion-card-content>
+                <b style="font-family: primaryBold">AMAN DAN RAHASIA</b>
+              </ion-card-content>
+            <ion-row justify-content-center>
+                <img [src]="img3" alt="LOGO">
+            </ion-row>
+            <ion-card-content>
+              <p style="font-family: primaryBold; margin-bottom: 5%; margin-top: 14%;">Berbicara sebanyak yang anda inginkan tanpa harus merasa malu dan takut</p>
+            </ion-card-content>
           </div>
-        </ion-slide>
-        <ion-slide>
-          <ion-card-content>
-            <div style="padding: 0; width: 100%;">
-              <p style="font-family: primaryFont">Terhubung dengan konselor terpercaya dan ahli dalam bidang ini</p>
-              <!-- <ion-button expand="block" fill="clear" (click)="navigateTo('Home')">Next</ion-button> -->
-            </div><br>
-          </ion-card-content>
         </ion-slide>
       </ion-slides>
+      <ion-row>
+        <ion-col size="3"></ion-col>
+        <ion-col size="6">
+          <ion-button mode="ios" expand="block" color="warning" (click)="navigateTo('Home')">MULAI</ion-button>
+        </ion-col>
+        <ion-col size="3"></ion-col>
+      </ion-row>
     </div>
-    <ion-row>
-      <ion-col size="3"></ion-col>
-      <ion-col size="6">
-        <ion-button mode="ios" expand="block" color="warning" (click)="navigateTo('Home')">MULAI</ion-button>
-      </ion-col>
-      <ion-col size="3"></ion-col>
-    </ion-row>
   </div>
 </ion-content>
 

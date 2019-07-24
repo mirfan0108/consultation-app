@@ -32,7 +32,7 @@ const forgetRoutes: Routes = [
           ]
         },
         {
-          path: 'reset-password',
+          path: 'reset-password/:email',
           children: [
             {
               path: '',

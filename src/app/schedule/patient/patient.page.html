@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar color="secondary">
+      <ion-buttons slot="start" >
+        <ion-button (click)="navigateTo('home')">
+          <ion-icon name="home" ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Jadwal Saya</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group *ngFor="let dates of complaintsGroup">
+        <ion-card-content>
+          <ion-row justify-content-center>
+            <ion-col size="4">
+              <div class="divider"></div>
+            </ion-col>
+            <ion-col size="4" >
+              <p style="text-align: center">
+                  {{dates.date}}
+              </p>
+            </ion-col>
+            <ion-col size="4">
+              <div class="divider"></div>
+            </ion-col>
+
+          </ion-row>
+        </ion-card-content>
+        <ion-item *ngFor="let apply of dates.data" (click)="openModal('complain',apply)">
+          <ion-avatar slot="start">
+              <img  src="{{apply.profile.avatar}}">
+          </ion-avatar>
+          <ion-label>
+              {{apply.subyek}} <br>
+              <small style="font-size: 8pt">{{apply.description}}</small>
+          </ion-label>
+          <ion-note slot="end">{{apply.created_on.split('T')[1].split(':')[0]}}: {{apply.created_on.split('T')[1].split(':')[1]}}</ion-note>
+        </ion-item>
+      </ion-item-group>
+</ion-content>

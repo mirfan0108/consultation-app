@@ -7,6 +7,7 @@ import { ConselorService } from '../services/conselor.service';
 import { ProfileService } from '../services/profile.service';
 import { environment } from 'src/environments/environment'
 import Swal  from 'sweetalert2';
+import { group } from '@angular/animations';
 const MEDIA = environment.imageUrl;
 @Component({
   selector: 'app-conselor',
@@ -23,9 +24,13 @@ export class ConselorPage implements OnInit {
   conselingData: any = []
   imgUrl = MEDIA;
 
+  listAppliesDate: any;
+  complaintsGroup = []
+
   ngOnInit() {
     this.appliedData = []
     this.conselingData = []
+    this.complaintsGroup = []
     this.api.getAll()
     .subscribe((resp: any) => {
       if(resp.success) {
@@ -57,6 +62,55 @@ export class ConselorPage implements OnInit {
         console.log(resp.data)
         
       }
+      this.api.getComplain().subscribe((resComplaint: any) => {
+        let dates = []
+
+        resComplaint.data.forEach(element => {
+          let tempDate = element.created_on.split("T")[0]
+          const i = dates.findIndex(_item => _item === tempDate);
+          if (i > -1) {
+          } else {
+            dates.push(tempDate);
+          }
+          console.log(i);
+          console.log(tempDate)
+        });
+        
+        dates.forEach(element => {
+          let tempData = {
+            date: element,
+            data: []
+          }
+          resComplaint.data.forEach(_element => {
+            let tempDate = _element.created_on.split("T")[0]
+            if(tempDate == element) {
+              tempData.data.push(_element)
+            }
+          });
+          this.complaintsGroup.push(tempData)
+        });
+        console.log(dates)
+        
+        this.complaintsGroup.forEach(group => {
+          group.data.forEach(data => {
+            this.apiProfile.getProfile(data.patientId)
+              .subscribe((responseProfile:any) => {
+                console.log(responseProfile.data[0])
+                if(responseProfile.data[0].avatar == "") {
+                  if(responseProfile.data[0].gender == "men") {
+                    responseProfile.data[0].avatar = "../../assets/images/default-men.jpg"
+                  } else {
+                    responseProfile.data[0].avatar = "../../assets/images/default-women.jpg"
+                  }
+                } else {
+                  responseProfile.data[0].avatar = MEDIA+"/media/"+responseProfile.data[0]._id;
+                }
+                data.profile = responseProfile.data[0]
+              })
+          })
+        })
+        console.log(this.complaintsGroup)
+      })
     })
   }
   doLogout() {
@@ -85,7 +139,11 @@ export class ConselorPage implements OnInit {
   navigateTo(page) {
     switch (page) {
       case 'user':
-      this.router.navigateByUrl('/user');
+        this.router.navigateByUrl('/user');
+      break;
+
+      case 'scheduler':
+        this.router.navigateByUrl('/weekly');
       break;
       default:
         break;

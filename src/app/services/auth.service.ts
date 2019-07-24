@@ -6,7 +6,8 @@ import { User } from  '../auth/user';
 import { AuthResponse } from  '../auth/auth-response';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { async } from 'q';
-
+import { environment } from 'src/environments/environment'
+const ENV = environment.apiUrl;
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +21,9 @@ export class AuthService {
   register(newUser: any) {
     console.log(newUser)
     let form = new FormData();
-    form.append("avatar", newUser.avatar, newUser.avatar.name);
+    if(newUser.avatar) {
+      form.append("avatar", newUser.avatar, newUser.avatar.name);
+    }
     form.append("email", newUser.email);
     form.append("role", newUser.role);
     form.append("password", newUser.password);
@@ -31,12 +34,7 @@ export class AuthService {
     form.append("address", newUser.address);
     
     return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/api/regist`, form).pipe(
-      tap(async (res:  AuthResponse ) => {
-        let user = res[0]
-        if (user._id) {
-          this.authSubject.next(true);
-        }
-      })
+      tap((res:  any ) => { res })
 
     );
   }
@@ -44,15 +42,20 @@ export class AuthService {
   login(user: any): Observable<AuthResponse> {
     return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/api/login`, user).pipe(
       tap(async (res: any) => {
+        console.log(res)
         let user = res[0];
-        if (user._id) {
-          if(user._id) {
-            await localStorage.setItem("_USER", JSON.stringify({_ID: user._id, role:user.role}));
-            // await localStorage.setItem("role", user.role);
-            this.authSubject.next(true);
-
-          }
+        if(res.length > 0) {
+          if (user._id) {
+            if(user._id) {
+              await localStorage.setItem("_USER", JSON.stringify({_ID: user._id, role:user.role}));
+              // await localStorage.setItem("role", user.role);
+              this.authSubject.next(true);
+  
+            }
+          } 
         }
+        
+        
       })
     );
   }
@@ -94,4 +97,26 @@ export class AuthService {
     }
     return false;
   }
+
+  sendEmail(form) {
+    return this.httpClient.post(`${ENV}/forget-password/send-email`, form)
+    .pipe(
+      tap(async res => res)
+    ) 
+  }
+
+  verifyCode(form) {
+    return this.httpClient.post(`${ENV}/forget-password/verify`, form)
+    .pipe(
+      tap(async res => res)
+    ) 
+  }
+
+  doReset(form) {
+    return this.httpClient.post(`${ENV}/reset-password`, form)
+    .pipe(
+      tap(async res => res)
+    ) 
+  }
+
 }

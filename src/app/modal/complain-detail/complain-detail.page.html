@@ -54,25 +54,21 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{detail.title}}</ion-card-title>
+      <ion-card-title>{{title}}</ion-card-title>
       <ion-card-subtitle>{{normalizeDate(detail.created_on)}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-row>
-        <ion-col size="6">
-          Tanggal Konsultasi <br>
-          <ion-note>20 Juni 2020</ion-note>
-        </ion-col>
-        <ion-col size="6" >
-          Jam <br>
-          <ion-note>09:00</ion-note>
+        <ion-col>
+          Keterangan :<br>
+          <ion-note>{{detail.subyek}}</ion-note>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          Deskripsi Pengaduan :
+          Cerita :
           <br><ion-note>
-            {{detail.description}}
+            {{detail.story}}
           </ion-note>
         </ion-col>
       </ion-row>

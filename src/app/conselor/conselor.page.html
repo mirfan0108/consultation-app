@@ -5,7 +5,7 @@
         <ion-label>List Pengaduan</ion-label>
       </ion-segment-button>
       <ion-segment-button value="onschedule">
-        <ion-label>Jadwal</ion-label>
+        <ion-label>Konsultasi</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -13,8 +13,36 @@
 
 <ion-content>
   <div *ngIf="segmentToolbar == 'list'">
-    <ion-list *ngIf="appliedData.length > 0">
-      <ion-item *ngFor="let apply of appliedData">
+    <ion-list *ngIf="complaintsGroup.length > 0">
+      <ion-item-group *ngFor="let dates of complaintsGroup">
+        <ion-card-content>
+          <ion-row justify-content-center>
+            <ion-col size="4">
+              <div class="divider"></div>
+            </ion-col>
+            <ion-col size="4" >
+              <p style="text-align: center">
+                  {{dates.date}}
+              </p>
+            </ion-col>
+            <ion-col size="4">
+              <div class="divider"></div>
+            </ion-col>
+
+          </ion-row>
+        </ion-card-content>
+        <ion-item *ngFor="let apply of dates.data" (click)="openModal('complain',apply)">
+          <ion-avatar slot="start">
+              <img  src="{{apply.profile.avatar}}">
+          </ion-avatar>
+          <ion-label>
+              {{apply.subyek}} <br>
+              <small style="font-size: 8pt">{{apply.description}}</small>
+          </ion-label>
+          <ion-note slot="end">{{apply.created_on.split('T')[1].split(':')[0]}}: {{apply.created_on.split('T')[1].split(':')[1]}}</ion-note>
+        </ion-item>
+      </ion-item-group>
+      <!-- <ion-item *ngFor="let dates of complaintsGroup">
         <ion-avatar slot="start" *ngIf="apply.status == 0">
           <img *ngIf="apply.profile.avatar" src="{{apply.profile.avatar}}">
         </ion-avatar>
@@ -27,7 +55,7 @@
         <ion-buttons slot="end" *ngIf="apply.status == 0">
           <ion-button color="secondary" (click)="openModal('complain',apply)">Detail</ion-button>
         </ion-buttons>
-      </ion-item>
+      </ion-item> -->
     </ion-list>
   </div>
 
@@ -58,10 +86,10 @@
     </ion-segment-button>
     <!-- <ion-segment-button (click)="navigateTo('user')">
       <ion-icon name="chatboxes"></ion-icon>
-    </ion-segment-button>
-    <ion-segment-button value="onschedule">
-      <ion-icon name="time"></ion-icon>
     </ion-segment-button> -->
+    <ion-segment-button (click)="navigateTo('scheduler')">
+      <ion-icon name="time"></ion-icon>
+    </ion-segment-button>
     <ion-segment-button value="logout" (click)="doLogout()">
       <ion-icon name="backspace"></ion-icon>
     </ion-segment-button>

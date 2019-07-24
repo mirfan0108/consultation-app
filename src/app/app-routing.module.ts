@@ -20,7 +20,12 @@ const routes: Routes = [
   { path: 'profile-detail', loadChildren: './modal/profile-detail/profile-detail.module#ProfileDetailPageModule' },
   { path: 'change-password', loadChildren: './authentication/change-password/change-password.module#ChangePasswordPageModule' },
   { path: 'verify', loadChildren: './authentication/verify/verify.module#VerifyPageModule' },
-  { path: 'reset-password', loadChildren: './authentication/reset-password/reset-password.module#ResetPasswordPageModule' }
+  { path: 'reset-password', loadChildren: './authentication/reset-password/reset-password.module#ResetPasswordPageModule' },
+  { path: 'patient', loadChildren: './schedule/patient/patient.module#PatientPageModule' },
+  { path: 'weekly', loadChildren: './conselor/weekly/weekly.module#WeeklyPageModule' },
+  { path: 'form-complaint', loadChildren: './complaint/form-complaint/form-complaint.module#FormComplaintPageModule' },
+  { path: 'modify-complaint/:complaintId', loadChildren: './complaint/modify-complaint/modify-complaint.module#ModifyComplaintPageModule' }
+
 
 ];
 

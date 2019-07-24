@@ -1,0 +1,14 @@
+.bg-regist {
+    // position: relative;
+    --background: url('../../../assets/images/bg_app.png') 0 0/100% 100% no-repeat;
+}
+.avatar-element {
+    position: relative;
+    width: 80%;
+    .btn-camera {
+        position: absolute;
+        left: 23%;
+        top: 50%;
+        font-size: 33px;
+    }
+}

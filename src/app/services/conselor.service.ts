@@ -15,7 +15,6 @@ export class ConselorService {
     return this.httpClient.get(`${ENV}/conseling`);
   }
 
-  getComplain() {}
   approveComplain(req) {
     console.log(req)
     let form = {
@@ -28,11 +27,26 @@ export class ConselorService {
       conselorId: req.conselorId,
       created_on: req.created_on
     }
-    return this.httpClient.put(`${ENV}/conseling/${req._id}`,form);
+    return this.httpClient.put(`${ENV}/complaint/${req._id}`,form);
   }
-  ignoteComplain() {}
-  setToEnd() {
-    
+  ignoreComplain() {}
+  setToEnd() {}
+
+  postComplain(req) {
+    return this.httpClient.post(`${ENV}/complaint`,req);
+  }
+
+  getPatientComplain() {
+    let storeLocal = localStorage.getItem('_USER');
+    let id = JSON.parse(storeLocal)._ID;
+    return this.httpClient.get(`${ENV}/complaint/patient/${id}`);
+  }
+
+  getComplain() {
+    return this.httpClient.get(`${ENV}/complaint`);
+  }
+  getComplainId(req) {
+    return this.httpClient.get(`${ENV}/complaint/${req}`);
   }
 
 }

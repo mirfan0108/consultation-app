@@ -11,11 +11,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { TabsPage } from './tabs/tabs.page';
 import { HttpClientModule } from '@angular/common/http';
 import { ComplainDetailPage } from './modal/complain-detail/complain-detail.page';
+import { NormalizePipe } from './pipes/normalize.pipe';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    TabsPage],
+    TabsPage, NormalizePipe],
   entryComponents: [
   ],
   imports: [

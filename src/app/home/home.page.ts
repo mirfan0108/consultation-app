@@ -15,14 +15,17 @@ export class HomePage {
   navigateTo(page) {
     switch (page) {
       case 'schedule':
-      this.router.navigateByUrl('/schedule');
-      break;
+        this.router.navigateByUrl('/schedule');
+        break;
       case 'pengaduan':
-      this.router.navigateByUrl('/schedule');
-      break;
+        this.router.navigateByUrl('/schedule');
+        break;
       case 'user':
-      this.router.navigateByUrl('/user');
-      break;
+        this.router.navigateByUrl('/user');
+        break;
+      case 'complaint':
+        this.router.navigateByUrl('/complaint');
+        break;
       default:
         break;
     }
