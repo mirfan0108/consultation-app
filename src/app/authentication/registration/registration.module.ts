@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RegistrationPage } from './registration.page';
+import { UserAgreementPage } from 'src/app/user-agreement/user-agreement.page';
 
 const routes: Routes = [
   {
@@ -15,6 +16,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [
+    UserAgreementPage
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,6 +26,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RegistrationPage]
+  declarations: [RegistrationPage, UserAgreementPage]
 })
 export class RegistrationPageModule {}

@@ -1,6 +1,16 @@
 <ion-header >
   <ion-toolbar  color="secondary">
-    <ion-segment  (ionChange)="segmentChanged($event)">
+    <ion-title>
+      Beranda
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="navigateTo('user')">
+          <ion-icon name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+  <ion-segment  (ionChange)="segmentChanged($event)">
       <ion-segment-button value="list"  checked>
         <ion-label>List Pengaduan</ion-label>
       </ion-segment-button>
@@ -8,7 +18,6 @@
         <ion-label>Konsultasi</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -80,18 +89,37 @@
 </ion-content>
 
 <ion-footer>
-  <ion-segment>
+  <!-- <ion-segment>
     <ion-segment-button (click)="navigateTo('user')">
       <ion-icon name="person"></ion-icon>
     </ion-segment-button>
-    <!-- <ion-segment-button (click)="navigateTo('user')">
-      <ion-icon name="chatboxes"></ion-icon>
-    </ion-segment-button> -->
     <ion-segment-button (click)="navigateTo('scheduler')">
       <ion-icon name="time"></ion-icon>
     </ion-segment-button>
     <ion-segment-button value="logout" (click)="doLogout()">
       <ion-icon name="backspace"></ion-icon>
     </ion-segment-button>
-  </ion-segment>
+  </ion-segment> -->
+  <ion-segment color="warning" value="home">
+      <ion-segment-button value="chat" (click)="navigateTo('roomList')">
+        <ion-icon src="../../assets/images/svg/chatbox.svg"></ion-icon>
+        <label style="font-size: 6px;">Percakapan</label>
+      </ion-segment-button>
+      <ion-segment-button value="home">
+        <ion-icon src="../../assets/images/svg/folder-active.svg"></ion-icon>
+        <label style="font-size: 6px; color: yellow">Pengaduan</label>
+      </ion-segment-button>
+      <ion-segment-button (click)="navigateTo('scheduler')" value="sc">
+        <ion-icon src="../../assets/images/svg/calendar.svg"></ion-icon>
+        <label style="font-size: 6px;">Jadwal</label>
+      </ion-segment-button>
+      <!-- <ion-segment-button>
+        <ion-icon name="time"></ion-icon>
+        <label style="font-size: 6px;">Sejarah</label>
+      </ion-segment-button> -->
+      <ion-segment-button (click)="doLogout()">
+        <ion-icon src="../../assets/images/svg/close.svg"></ion-icon>
+        <label style="font-size: 6px;">Keluar</label>
+      </ion-segment-button>
+    </ion-segment>
 </ion-footer>

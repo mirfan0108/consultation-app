@@ -33,14 +33,14 @@ export class AuthService {
     form.append("birth", newUser.birth);
     form.append("address", newUser.address);
     
-    return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/api/regist`, form).pipe(
+    return this.httpClient.post(`${ENV}/regist`, form).pipe(
       tap((res:  any ) => { res })
 
     );
   }
 
   login(user: any): Observable<AuthResponse> {
-    return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/api/login`, user).pipe(
+    return this.httpClient.post(`${ENV}/login`, user).pipe(
       tap(async (res: any) => {
         console.log(res)
         let user = res[0];

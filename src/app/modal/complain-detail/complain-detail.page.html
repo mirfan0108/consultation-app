@@ -18,7 +18,11 @@
 
 <ion-content>
   <ion-card>
-    <img [src]="detail.profile.avatar">
+    <ion-row justify-content-center>
+        <ion-avatar>
+          <img [src]="detail.profile.avatar">
+        </ion-avatar>
+    </ion-row>
     <ion-card-header>
       <ion-card-title>Profil</ion-card-title>
     </ion-card-header>
@@ -82,10 +86,11 @@
 <ion-footer>
   <ion-row>
     <ion-col size="6">
-      <ion-button color="danger" expand="block" (click)="generateCancellation()">Tolak</ion-button>
+      <ion-button color="success" expand="block" (click)="doAccept()">Terima</ion-button>
     </ion-col>
     <ion-col size="6">
-      <ion-button color="secondary" expand="block" (click)="doAccept()">Terima</ion-button>
+      <ion-button color="danger" expand="block" (click)="generateCancellation()">Beri Catatan</ion-button>
     </ion-col>
+    
   </ion-row>
 </ion-footer>

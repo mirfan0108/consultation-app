@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, ModalController } from '@ionic/angular';
 import Swal  from 'sweetalert2';
 import { SchedulerService } from '../services/scheduler.service';
 import { tap } from 'rxjs/operators';
@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { ConselorService } from '../services/conselor.service';
 
 import { environment } from 'src/environments/environment'
+import { ProfileService } from '../services/profile.service';
+import { MiniServicesService } from '../services/mini-services.service';
+import { SchedulePatientPage } from '../modal/schedule-patient/schedule-patient.page';
 const MEDIA = environment.imageUrl;
 @Component({
   selector: 'app-schedule',
@@ -20,8 +23,9 @@ export class SchedulePage implements OnInit {
     {clock:'14:00', avail: 1},{clock:'15:00', avail: 1},{clock:'16:00', avail: 1},
     {clock:'17:00', avail: 1},{clock:'18:00', avail: 1},{clock:'19:00', avail: 1}
   ];
-  constructor(public toastController: ToastController, private api: SchedulerService,
-    private router: Router, private complaintApi: ConselorService) { }
+  constructor(public toastController: ToastController, private api: SchedulerService, private apiMini: MiniServicesService,
+    private router: Router, private complaintApi: ConselorService, private profileService: ProfileService, 
+    public modalController:ModalController) { }
   formApply = {
     applyDate: '',
     clock: ''
@@ -37,9 +41,13 @@ export class SchedulePage implements OnInit {
   complaints: any;
   segmentSchedule: 'new' | 'complaint';
   profile: any;
+  conselings = [];
+  categories = [];
 
   logo: any;
   ngOnInit() {
+    this.complaints = []
+    this.conselings = []
     this.logo = '../../assets/images/logo-cons.png';
     this.segmentSchedule = 'new';
     this.formApply.applyDate = this.formatDate()
@@ -51,17 +59,17 @@ export class SchedulePage implements OnInit {
         date: this.formApply.applyDate,
         time: item.clock
       }
-      setTimeout(() => {
-        this.api.getSchedule(form).subscribe((res: any) => {
-          res.data.forEach(element => {
-            if(form.date == element.date && form.time == element.time){
-              item.avail = 0
-            } 
-          });
-        })
-      }, 500)
+      // setTimeout(() => {
+      //   this.api.getSchedule(form).subscribe((res: any) => {
+      //     res.data.forEach(element => {
+      //       if(form.date == element.date && form.time == element.time){
+      //         item.avail = 0
+      //       } 
+      //     });
+      //   })
+      // }, 500)
     });
-    this.updateConseling()
+    // this.updateConseling()
     this.complaintApi.getPatientComplain().subscribe((res: any) => {
       
       this.complaints = res.data
@@ -75,6 +83,34 @@ export class SchedulePage implements OnInit {
         res.profile.avatar = MEDIA+"/media/"+res.profile._id;
       }
       this.profile = res.profile
+      this.complaints.forEach(element => {
+        if(element.status == 1) {
+          this.profileService.getProfile(element.conselorId)
+          .subscribe((resp: any) => {
+            if(resp.data[0].avatar == "") {
+              if(resp.data[0].gender == "men") {
+                resp.data[0].avatar = "../../assets/images/default-men.jpg"
+              } else {
+                resp.data[0].avatar = "../../assets/images/default-women.jpg"
+              }
+            } else {
+              resp.data[0].avatar = MEDIA+"/media/"+resp.data[0]._id;
+            }
+            element.profile_conselor = resp.data[0]
+          })
+          this.apiMini.getCategory(element.category_id)
+            .subscribe((res: any) => {
+              element.category = res.data.category
+            })
+          if(element.status == 1) {
+            element.date = "Belum Diatur";
+          } else {
+            element.date = "19/02/2019 08:00-09:00";
+          }
+          this.conselings.push(element)
+        }
+      })
+
     })
   }
 
@@ -263,5 +299,36 @@ export class SchedulePage implements OnInit {
     })
   }
 
+  openModal(mod, data: any) {
+    switch (mod) {
+      case 'setSchedule':
+        this.setScheduleModal(data)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  async setScheduleModal(data: any) {
+    const modal = await this.modalController.create({
+      component: SchedulePatientPage,
+      componentProps: {
+        detail: data
+      }
+    });
+    modal.onDidDismiss().then(() => {
+      Swal.fire({
+        type: 'success',
+        title: 'Sukses',
+        text: 'Berhasil membuat jadwal konsultasi',
+        onClose: () => {
+          this.ngOnInit()
+          this.router.navigateByUrl('home')
+        }
+      })
+    })
+    return await modal.present();
+  }
   
 }

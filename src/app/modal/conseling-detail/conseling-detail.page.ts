@@ -1,6 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import Swal  from 'sweetalert2';
+import { ConselorService } from 'src/app/services/conselor.service';
+import { Router } from '@angular/router';
+import { ChatRoomPage } from 'src/app/chat-room/chat-room.page';
+import { Socket } from 'ng-socket-io';
+import { ChatConselorPage } from 'src/app/chat-conselor/chat-conselor.page';
 
 
 @Component({
@@ -10,9 +15,12 @@ import Swal  from 'sweetalert2';
 })
 export class ConselingDetailPage implements OnInit {
   @Input() detail: any;
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private api: ConselorService, private router: Router, 
+    private socket: Socket) { }
 
+  finishStaging = false;
   ngOnInit() {
+    console.log(this.detail)
   }
 
 
@@ -54,6 +62,33 @@ export class ConselingDetailPage implements OnInit {
         }
       }
     })
+  }
+
+  doPending() {
+    this.finishStaging = false;
+  }
+
+  doAccept() {
+    this.detail.status = 1;
+    this.api.updateStatusConseling(this.detail)
+    .subscribe(res => {
+      console.log(res)
+      Swal.fire({
+        type: 'success',
+        title: 'Selesai',
+        text: 'Sesi konsultasi telah diselesaikan',
+        onClose: () => {
+          this.modalCtrl.dismiss()
+          this.router.navigateByUrl('conselor')
+        }
+      })
+    })
+    // console.log(this.detail)
+  }
+
+  doFinish() {
+    this.finishStaging = true;
+    
   }
   normalizeDate(date: string) {
     let dateChiper = date.split("T")
@@ -100,6 +135,25 @@ export class ConselingDetailPage implements OnInit {
         break;
     }
     return dateText;
+  }
+  joinChat() {
+    // this.modalCtrl.dismiss();
+    let storeLocal = localStorage.getItem('_USER');
+    let id = JSON.parse(storeLocal)._ID;
+    this.socket.connect()
+    this.socket.emit('set-nickname', id)
+    this.chatRoom(this.detail)
+    console.log(this.detail)
+  }
+
+  async chatRoom(data: any) {
+    const modal = await this.modalCtrl.create({
+      component: ChatConselorPage,
+      componentProps: {
+        messanger: data
+      }
+    });
+    return await modal.present();
   }
 
 }

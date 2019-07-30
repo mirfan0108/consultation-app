@@ -26,4 +26,32 @@ export class MiniServicesService {
   getCategory(req) {
     return this.httpClient.get(`${ENV}/category/${req}`);
   }
+
+  setWeekly(req) {
+    return this.httpClient.post(`${ENV}/schedule/weekly`, req)
+  }
+  putWeekly(req) {
+    return this.httpClient.put(`${ENV}/schedule/weekly/${req.conselor_id}`, req)
+  }
+  getWeekly(id) {
+    return this.httpClient.get(`${ENV}/schedule/weekly/${id}`)
+  }
+
+  createConseling(req) {
+    return this.httpClient.post(`${ENV}/conseling`, req)
+  }
+
+  declineComplaint(req) {
+    return this.httpClient.post(`${ENV}/complaint/decline`, req)
+  }
+  getDeclineComplaint(id) {
+    return this.httpClient.get(`${ENV}/complaint/decline/${id}`)
+  }
+
+  getMessages(id) {
+    return this.httpClient.get(`${ENV}/chat/room/${id}`)
+  }
+  sendMessage(req) {
+    return this.httpClient.post(`${ENV}/chat/room`, req)
+  }
 }

@@ -6,6 +6,8 @@ import { CalendarModule } from 'ion2-calendar';
 import { IonicModule } from '@ionic/angular';
 
 import { SchedulePage } from './schedule.page';
+import { CategoryPipe } from '../pipes/category.pipe';
+import { SchedulePatientPage } from '../modal/schedule-patient/schedule-patient.page';
 
 const routes: Routes = [
   {
@@ -15,6 +17,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [
+    SchedulePatientPage,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,6 +27,6 @@ const routes: Routes = [
     CalendarModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [SchedulePage]
+  declarations: [SchedulePage, SchedulePatientPage]
 })
 export class SchedulePageModule {}

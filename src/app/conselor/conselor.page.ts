@@ -6,6 +6,7 @@ import { ConselingDetailPage } from '../modal/conseling-detail/conseling-detail.
 import { ConselorService } from '../services/conselor.service';
 import { ProfileService } from '../services/profile.service';
 import { environment } from 'src/environments/environment'
+import { ConselorPage as c} from '../room/conselor/conselor.page';
 import Swal  from 'sweetalert2';
 import { group } from '@angular/animations';
 const MEDIA = environment.imageUrl;
@@ -42,8 +43,9 @@ export class ConselorPage implements OnInit {
               if(resProfile.data[0]) {
                 tempProfile = resProfile.data[0]
                 item.profile = tempProfile
-                if(item.profile.avatar == "") {
-                  item.profile.gender == "men" ? item.profile.avatar = MEDIA+"/"+"default-men.jpg" : item.profile.avatar = MEDIA+"/"+"default-women.jpg"
+                console.log(item.profile.avatar)
+                if(item.profile.avatar.data == null || item.profile.avatar == "") {
+                  item.profile.gender == "men" ? item.profile.avatar = "../../assets/images/default-men.jpg" : item.profile.avatar = "../../assets/images/default-women.jpg"
                 } else {
                   item.profile.avatar = MEDIA+"/"+tempProfile.avatar;
                 }
@@ -52,12 +54,7 @@ export class ConselorPage implements OnInit {
           })
           if(item.status == 0) {
             this.appliedData.push(item);
-          } else if(item.status == 1) {
-            let myID = JSON.parse(localStorage.getItem("_USER"))
-            if(item.conselorId == myID._ID) {
-              this.conselingData.push(item)
-            } 
-          }
+          } 
         })
         console.log(resp.data)
         
@@ -96,11 +93,11 @@ export class ConselorPage implements OnInit {
             this.apiProfile.getProfile(data.patientId)
               .subscribe((responseProfile:any) => {
                 console.log(responseProfile.data[0])
-                if(responseProfile.data[0].avatar == "") {
+                if(responseProfile.data[0].avatar == "" || responseProfile.data[0].avatar.data == null) {
                   if(responseProfile.data[0].gender == "men") {
-                    responseProfile.data[0].avatar = "../../assets/images/default-men.jpg"
+                    responseProfile.data[0].avatar = "../../assets/images/men.jpg"
                   } else {
-                    responseProfile.data[0].avatar = "../../assets/images/default-women.jpg"
+                    responseProfile.data[0].avatar = "../../assets/images/women.jpg"
                   }
                 } else {
                   responseProfile.data[0].avatar = MEDIA+"/media/"+responseProfile.data[0]._id;
@@ -108,6 +105,30 @@ export class ConselorPage implements OnInit {
                 data.profile = responseProfile.data[0]
               })
           })
+        })
+
+        this.api.getConsultation(JSON.parse(localStorage.getItem("_USER"))._ID)
+        .subscribe((responseConsult: any) => {
+          this.conselingData = [];
+          responseConsult.data.forEach(consult => {
+            this.apiProfile.getProfile(consult.patientId)
+              .subscribe((responseProfile:any) => {
+                console.log(responseProfile.data[0])
+                if(responseProfile.data[0].avatar == "") {
+                  if(responseProfile.data[0].gender == "men") {
+                    responseProfile.data[0].avatar = "../../assets/images/men.jpg"
+                  } else {
+                    responseProfile.data[0].avatar = "../../assets/images/women.jpg"
+                  }
+                } else {
+                  responseProfile.data[0].avatar = MEDIA+"/media/"+responseProfile.data[0]._id;
+                }
+                consult.profile = responseProfile.data[0]
+              })
+              if(consult.status != 1) {
+                this.conselingData.push(consult)
+              }
+          });
         })
         console.log(this.complaintsGroup)
       })
@@ -141,7 +162,9 @@ export class ConselorPage implements OnInit {
       case 'user':
         this.router.navigateByUrl('/user');
       break;
-
+      case 'roomList':
+        this.myRoom()
+      break;
       case 'scheduler':
         this.router.navigateByUrl('/weekly');
       break;
@@ -186,6 +209,15 @@ export class ConselorPage implements OnInit {
     return await modal.present();
   }
 
+  async myRoom() {
+    const modal = await this.modalController.create({
+      component: c,
+      componentProps: {
+        conselingData: this.conselingData
+      }
+    });
+    return await modal.present();
+  }
   
 
 }

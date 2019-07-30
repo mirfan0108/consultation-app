@@ -96,14 +96,14 @@
         </ion-item>
       </div>
 
-      <div style="margin: 5px">
+      <!-- <div style="margin: 5px">
         <ion-item>
           <ion-label><ion-icon name="lock"></ion-icon></ion-label>
           <ion-input placeholder="Konfirmasi Kata Sandi" type="password" [(ngModel)]="formRegist.confirmPassword"></ion-input>
         </ion-item>
-      </div>
+      </div> -->
 
-      <ion-button expand="block" color="warning" (click)="checkRegist()" 
+      <ion-button expand="block" color="warning" (click)="informed()" 
       disabled="{{formRegist.email == '' || formRegist.name == '' 
       || formRegist.hp == '' || formRegist.address == '' || formRegist.password == ''
       || formRegist.password != formRegist.confirmPassword}}">Daftar</ion-button>

@@ -5,6 +5,8 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { async } from 'q';
+import { ModalController } from '@ionic/angular';
+import { UserAgreementPage } from 'src/app/user-agreement/user-agreement.page';
 
 @Component({
   selector: 'app-registration',
@@ -29,7 +31,7 @@ export class RegistrationPage implements OnInit {
   resultRegist: boolean;
 
   constructor(private router: Router, public formBuilder: FormBuilder, private api : AuthService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute, private modalCtrl: ModalController) { }
 
 
   ngOnInit() {
@@ -70,7 +72,24 @@ export class RegistrationPage implements OnInit {
     }
   }
 
+
+  async informed() {
+    if(this.formRegist.role == '0') {
+      const modal = await this.modalCtrl.create({
+        component: UserAgreementPage
+      });
+      modal.onDidDismiss().then(res => {
+        this.checkRegist()
+      })
+      return await modal.present();
+    } else {
+        this.checkRegist()
+    }
+  }
+
   checkRegist() {
+    
+
     this.formRegist.avatar = this.file
     let msgErr = '';
     let validations_form = this.formBuilder.group({

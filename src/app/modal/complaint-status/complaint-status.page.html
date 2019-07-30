@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()"><ion-icon name="close"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>{{detail.status == 9 ? 'Hasil Pengaduan':'Verifikasi'}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="detail.status == 9">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          Mohon Maaf, Pengaduan anda tidak dapat kami teruskan ke sesi konsultasi. Berikut catatan dari konselor kami
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-card>
+          <ion-card-content>
+            <ion-card-title>
+             Cerita Anda :
+            </ion-card-title>
+            <ion-card-subtitle>
+              <ion-row>
+                {{detail.story}}
+              </ion-row>
+            </ion-card-subtitle>
+          </ion-card-content>
+        </ion-card>
+      </ion-card-content>
+      <ion-card-content *ngIf="noted">
+        <ion-label><b>Respon Konselor :</b></ion-label>
+        "{{noted.note}}"
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="detail.status == 0">
+    <ion-card-content>
+      <ion-row justify-content-center>
+        <ion-label color="secondary"><b>Menunggu verifikasi dari konselor</b></ion-label>
+      </ion-row>
+    </ion-card-content>
+  </div>
+
+  <div class="footer-status" *ngIf="detail.status == 0">
+    <ion-card-content>
+      <p>
+      <ion-note>
+        Hasil Verifikasi akan dikirimkan melalui email Anda Maksimal 30 menit setelah Anda melakukan pengaduan
+      </ion-note>
+    </p>
+    <br><br>
+    <p>
+      <ion-note>
+        Apabila pengaduan Anda disetujui, Anda dapat memilih jadwal untuk memulai konseling, apabila pengaduan Anda belum dapat disetuji, silahkan ikuti catatan yang kami kirimkan kepada Anda.
+      </ion-note>
+    </p>
+    </ion-card-content>
+  </div>
+</ion-content>

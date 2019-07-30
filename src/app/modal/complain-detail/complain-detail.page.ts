@@ -3,7 +3,6 @@ import { ModalController } from '@ionic/angular';
 import Swal  from 'sweetalert2';
 import { ConselorService } from 'src/app/services/conselor.service';
 import { MiniServicesService } from 'src/app/services/mini-services.service';
-
 @Component({
   selector: 'app-complain-detail',
   templateUrl: './complain-detail.page.html',
@@ -26,40 +25,62 @@ export class ComplainDetailPage implements OnInit {
   }
 
   generateCancellation(){
-    this.modalCtrl.dismiss()
-    // Swal.mixin({
-    //   input: 'text',
-    //   confirmButtonText: 'Next &rarr;',
-    //   showCancelButton: true,
-    //   progressSteps: ['1', '2']
-    // }).queue([
-    //   {
-    //     title: 'Alasan',
-    //     text: 'Berikan alasan anda'
-    //   },
-    //   {
-    //     title: 'Pesan',
-    //     text: 'Sampaikan pesan anda'
-    //   }
-    // ]).then((result) => {
-    //   console.log(result.value)
-    //   if(result.value) {
-    //     if (result.value[0] != "" && result.value[1] != "" 
-    //     && result.value[0] != " " && result.value[1] != " " ) {
+    // this.modalCtrl.dismiss()
+    Swal.mixin({
+      input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      showCancelButton: true,
+      progressSteps: ['1']
+    }).queue([
+      {
+        title: 'Catatan',
+        text: 'Berikan catatan'
+      }
+    ]).then((result) => {
+      console.log(result.value)
+      if(result.value) {
+        if (result.value[0] != ""  
+        && result.value[0] != " " ) {
+          console.log(this.detail)
+          let formDecline = {
+            complaint_id: this.detail._id,
+            note: result.value[0]
+          }
+          let formUpdateStatus = {
+            _id: this.detail._id,
+            status: 9,
+            category_id: this.detail.category_id,
+            subyek: this.detail.subyek,
+            story: this.detail.story,
+            patientId: this.detail.patientId,
+            conselorId: this.detail.conselorId,
+            created_on: this.detail.created_on
+          }
+          this.apiMini.declineComplaint(formDecline).subscribe(resp => {
+            if(resp) {
+              this.api.ignoreComplain(formUpdateStatus) .subscribe(res => {
+                if(res) {
+                  Swal.fire({
+                    title: 'Berhasil disimpan!',
+                    confirmButtonText: 'Done',
+                    onClose: () => {
+                      this.modalCtrl.dismiss()
+                    }
+                  })
+                }
+              })
+            }
+          })
           
-    //       Swal.fire({
-    //         title: 'All done!',
-    //         confirmButtonText: 'Done'
-    //       })
-    //     } else {
-    //       Swal.fire({
-    //         type: 'error',
-    //         title: 'Oops...',
-    //         text: 'Maaf gagal membuat jadwal dikarenakan data yang anda masukan kurang'
-    //       })
-    //     }
-    //   }
-    // })
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Maaf gagal, dikarenakan anda belum memberikan catatan'
+          })
+        }
+      }
+    })
   }
 
   doAccept() {
@@ -139,5 +160,7 @@ export class ComplainDetailPage implements OnInit {
       console.log(this.title)
     })
   }
+  
+  
   
 }

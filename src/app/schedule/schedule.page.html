@@ -27,48 +27,51 @@
 
 <ion-content>
 
-  <ion-card >
-    <ion-card-content>
-      <ion-row>
-        <ion-col>
-          <ion-note><b>Keterangan : </b><br>Pemaksaan Makan Kerupuk</ion-note><br>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="6">
-          <ion-note>
-            <b>Kategori : </b><br>
-            Pemaksaan 
-          </ion-note>
-        </ion-col>
-        <ion-col size="6">
-          <ion-note><b>Jadwal : </b><br>
-            <a href="javascript:void(0)"><ion-badge color="warning">Belum Mengatur</ion-badge></a></ion-note>
-        </ion-col>
-      </ion-row>
-      <ion-item>
-        <ion-avatar slot="start">
-            <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-        </ion-avatar>
-        <ion-label>
-          Konselor Anda <br>
-          <b style="font-size: 8pt">Paijo S.I</b>
-        </ion-label>
-      </ion-item>
+  <div *ngIf="conselings.length > 0">
+    <ion-card *ngFor="let conseling of conselings">
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-note><b>Keterangan : </b><br>{{conseling.subyek}}</ion-note><br>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-note>
+              <b>Kategori : </b><br>
+              {{conseling.category}} 
+            </ion-note>
+          </ion-col>
+          <ion-col size="6">
+            <ion-note><b>Jadwal : </b><br>
+              <ion-badge color="warning">{{conseling.date}}</ion-badge>
+            </ion-note>
+          </ion-col>
+        </ion-row>
+        <ion-item>
+          <ion-avatar slot="start">
+              <img src="{{conseling.profile_conselor.avatar}}">
+          </ion-avatar>
+          <ion-label>
+            Konselor Anda <br>
+            <b style="font-size: 8pt">{{conseling.profile_conselor.name}}</b>
+          </ion-label>
+        </ion-item>
+  
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" color="primary" (click)="openModal('setSchedule',conseling)">Atur Jadwal</ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="block" color="danger">Batalkan</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-      <ion-row>
-        <ion-col size="6">
-          <ion-button expand="block" color="primary" (click)="navigateTo('modify', complaint._id)">Atur Jadwal</ion-button>
-        </ion-col>
-        <ion-col size="6">
-          <ion-button expand="block" color="danger">Batalkan</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
 
-
-  <ion-row justify-content-start padding *ngIf="segmentSchedule == 'new'">
+  <!-- <ion-row justify-content-start padding *ngIf="segmentSchedule == 'new'">
     Tanggal Konseling
   </ion-row>
   
@@ -137,7 +140,7 @@
         </ion-note>
       </ion-item>
     </ion-list>
-  </ion-card-content>
+  </ion-card-content> -->
   
 </ion-content>
 

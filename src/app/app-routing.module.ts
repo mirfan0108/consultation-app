@@ -24,7 +24,18 @@ const routes: Routes = [
   { path: 'patient', loadChildren: './schedule/patient/patient.module#PatientPageModule' },
   { path: 'weekly', loadChildren: './conselor/weekly/weekly.module#WeeklyPageModule' },
   { path: 'form-complaint', loadChildren: './complaint/form-complaint/form-complaint.module#FormComplaintPageModule' },
-  { path: 'modify-complaint/:complaintId', loadChildren: './complaint/modify-complaint/modify-complaint.module#ModifyComplaintPageModule' }
+  { path: 'modify-complaint/:complaintId', loadChildren: './complaint/modify-complaint/modify-complaint.module#ModifyComplaintPageModule' },
+  { path: 'conseling', loadChildren: './other/conseling/conseling.module#ConselingPageModule' },
+  { path: 'test-ui', loadChildren: './room/test-ui/test-ui.module#TestUiPageModule' },
+
+
+
+
+
+  // { path: 'result-conseling', loadChildren: './modal/result-conseling/result-conseling.module#ResultConselingPageModule' },
+  // { path: 'complaint-status', loadChildren: './modal/complaint-status/complaint-status.module#ComplaintStatusPageModule' },
+
+
 
 
 ];

@@ -15,63 +15,64 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card-content>
-    <ion-row justify-content-center *ngIf="complaints.length == 0 ">
+    <ion-row justify-content-center *ngIf="complaints.length == 0 && !refreshing">
       Anda belum membuat pengaduan.
     </ion-row>
   </ion-card-content>
   <ion-card *ngFor="let complaint of complaints">
+    <ion-card-header color="{{complaint.status == 0 ? 'warning':'danger'}}">
+      <ion-row justify-content-center>
+          <a style="color:white" href="javascript:void(0)" (click)="seeComplaintStatus(complaint)">Lihat Status</a>
+      </ion-row>
+    </ion-card-header>
     <ion-card-content>
       <ion-row>
-        <ion-col>
-          <ion-note><b>Keterangan : </b><br>{{complaint.subyek}}</ion-note><br>
+        <ion-col size="6">
+          <ion-note><b>Tanggal Pengaduan : </b><br>{{ normalizeDate(complaint.created_on) }}</ion-note><br>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="6">
+        <ion-col >
           <ion-note>
             <b>Kategori : </b><br>
             {{complaint.category_id | categoryTrans}}
           </ion-note>
         </ion-col>
-        <ion-col size="6">
-          <ion-note><b>Status : </b><br><ion-badge color="warning">{{complaint.status == 0 ? "Pencarian Konsultan":"" }}</ion-badge></ion-note>
-        </ion-col>
       </ion-row>
-    
-      <ion-row>
+      
+      <!-- <ion-row>
         <ion-col size="6">
           <ion-button expand="block" color="primary" (click)="navigateTo('modify', complaint._id)">Ubah Data</ion-button>
         </ion-col>
         <ion-col size="6">
           <ion-button expand="block" color="danger">Batalkan</ion-button>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
     </ion-card-content>
   </ion-card>
   
 </ion-content>
-<ion-footer>
+<!-- <ion-footer>
   <ion-segment color="warning">
-    <ion-segment-button (click)="navigateTo('user')">
-      <ion-icon name="person"></ion-icon>
-      <label style="font-size: 6px;">Profil</label>
+    <ion-segment-button (click)="navigateTo('roomList')">
+      <ion-icon src="../../assets/images/svg/chatbox.svg"></ion-icon>
+      <label style="font-size: 6px;">Percakapan</label>
     </ion-segment-button>
     <ion-segment-button (click)="navigateTo('complaint')" checked>
-      <ion-icon name="list-box"></ion-icon>
+      <ion-icon src="../../assets/images/svg/folder.svg"></ion-icon>
       <label style="font-size: 6px;">Pengaduan</label>
     </ion-segment-button>
-    <ion-segment-button (click)="navigateTo('schedule')" >
-      <ion-icon name="calendar"></ion-icon>
+    <ion-segment-button (click)="navigateTo('schedule')">
+      <ion-icon src="../../assets/images/svg/calendar.svg"></ion-icon>
       <label style="font-size: 6px;">Jadwal</label>
     </ion-segment-button>
-    <!-- <ion-segment-button>
-      <ion-icon name="time"></ion-icon>
-      <label style="font-size: 6px;">Sejarah</label>
-    </ion-segment-button> -->
     <ion-segment-button (click)="doLogout()">
-      <ion-icon name="backspace"></ion-icon>
+      <ion-icon src="../../assets/images/svg/close.svg"></ion-icon>
       <label style="font-size: 6px;">Keluar</label>
     </ion-segment-button>
   </ion-segment>
-</ion-footer>
+</ion-footer> -->

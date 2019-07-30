@@ -12,17 +12,24 @@ import { TabsPage } from './tabs/tabs.page';
 import { HttpClientModule } from '@angular/common/http';
 import { ComplainDetailPage } from './modal/complain-detail/complain-detail.page';
 import { NormalizePipe } from './pipes/normalize.pipe';
+import { CalendarModule } from 'ion2-calendar';
+import { ConselingDirective } from './directives/conseling.directive';
 
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+
+const config: SocketIoConfig = {url: ' https://conseling-chat-server.herokuapp.com/', options: {}};
 @NgModule({
   declarations: [
     AppComponent, 
-    TabsPage, NormalizePipe],
+    TabsPage, NormalizePipe, ConselingDirective],
   entryComponents: [
   ],
   imports: [
     BrowserModule,
+    SocketIoModule.forRoot(config),
     IonicModule.forRoot(), 
     AppRoutingModule, 
+    CalendarModule,
     HttpClientModule],
   providers: [
     StatusBar,

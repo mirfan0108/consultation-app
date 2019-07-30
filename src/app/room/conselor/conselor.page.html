@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Percakapan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+      <ion-item *ngFor="let conseling of conselingData" (click)="joinChat(conseling)">
+        <ion-avatar slot="start">
+          <img [src]="conseling.profile.avatar">
+        </ion-avatar>
+        <ion-card-header>
+            <ion-card-subtitle>{{conseling.title}}</ion-card-subtitle>
+            <ion-card-subtitle>
+              <ion-note>{{conseling.profile.name}}</ion-note>            
+            </ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>
+</ion-content>
+
+<ion-footer>
+    <ion-segment color="warning">
+        <ion-segment-button checked>
+          <ion-icon src="../../assets/images/svg/chatbox-active.svg"></ion-icon>
+          <label style="font-size: 6px;">Percakapan</label>
+        </ion-segment-button>
+        <ion-segment-button (click)="navigateTo('conselor')">
+          <ion-icon src="../../assets/images/svg/folder.svg"></ion-icon>
+          <label style="font-size: 6px;">Pengaduan</label>
+        </ion-segment-button>
+        <ion-segment-button (click)="navigateTo('scheduler')">
+          <ion-icon src="../../assets/images/svg/calendar.svg"></ion-icon>
+          <label style="font-size: 6px;">Jadwal</label>
+        </ion-segment-button>
+        <!-- <ion-segment-button>
+          <ion-icon name="time"></ion-icon>
+          <label style="font-size: 6px;">Sejarah</label>
+        </ion-segment-button> -->
+        <ion-segment-button (click)="doLogout()">
+          <ion-icon src="../../assets/images/svg/close.svg"></ion-icon>
+          <label style="font-size: 6px;">Keluar</label>
+        </ion-segment-button>
+      </ion-segment>
+</ion-footer>

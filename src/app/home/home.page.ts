@@ -2,7 +2,17 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { SchedulerService } from '../services/scheduler.service';
-
+import { ConselingApiService } from '../services/conseling-api.service';
+import { ProfileService } from '../services/profile.service';
+import { environment } from 'src/environments/environment'
+import { ModalController } from '@ionic/angular';
+import { ResultConselingPage } from '../modal/result-conseling/result-conseling.page';
+import { ConselorService } from '../services/conselor.service';
+import { MiniServicesService } from '../services/mini-services.service';
+import { Socket } from 'ng-socket-io';
+import { ChatRoomPage } from '../chat-room/chat-room.page';
+import { PatientPage } from '../room/patient/patient.page';
+const MEDIA = environment.imageUrl;
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -10,12 +20,72 @@ import { SchedulerService } from '../services/scheduler.service';
 })
 export class HomePage {
   conselingApp = [];
+  categories = [];
 
-  constructor(private router: Router, private api: SchedulerService) {}
+
+  constructor(private router: Router, private api: SchedulerService, private apiConsel: ConselingApiService,
+    private apiProfile: ProfileService, private modalCtrl: ModalController,
+    private apiConselor: ConselorService, private apiCategories: MiniServicesService,
+    private socket: Socket) {
+    let me = localStorage.getItem('_USER')
+    if(JSON.parse(me).role == 1) {
+      this.router.navigateByUrl('conselor')
+    }
+  }
+
+  ngOnInit() {
+    let storeLocal = localStorage.getItem('_USER');
+    let id = JSON.parse(storeLocal)._ID;
+    if(JSON.parse(storeLocal).role != 0) {
+      this.router.navigateByUrl('conselor')
+    }
+    this.apiCategories.getCategories()
+      .subscribe((res: any) => {
+        console.log(res.data)
+        this.categories = res.data
+      })
+    this.apiConsel.getPatientConseling(id).subscribe((res: any) => {
+      res.data.forEach(element => {
+        this.apiConsel.getScheduleConseling(element._id)
+          .subscribe((resSchedule: any) => {
+            element.schedule = resSchedule.data[0]
+          })
+        
+        this.apiProfile.getProfile(element.conselorId)
+          .subscribe((responseProfile:any) => {
+            // console.log(responseProfile.data[0])
+            if(responseProfile.data[0].avatar == "") {
+              if(responseProfile.data[0].gender == "men") {
+                responseProfile.data[0].avatar = "../../assets/images/men.jpg"
+              } else {
+                responseProfile.data[0].avatar = "../../assets/images/women.jpg"
+              }
+            } else {
+              responseProfile.data[0].avatar = MEDIA+"/media/"+responseProfile.data[0]._id;
+            }
+            element.profile = responseProfile.data[0]
+          })
+        this.apiConselor.getComplainById(element.complaint_id)
+          .subscribe((respComplaint: any) => {
+            console.log(respComplaint.data)
+            this.categories.forEach(category => {
+              if(respComplaint.data.category_id == category._id) {
+                element.category = category
+              }
+            });
+          })
+          this.conselingApp.push(element)
+      });
+      console.log(this.conselingApp)
+    })
+  }
   navigateTo(page) {
     switch (page) {
       case 'schedule':
         this.router.navigateByUrl('/schedule');
+        break;
+      case 'roomList':
+        this.myRoom()
         break;
       case 'pengaduan':
         this.router.navigateByUrl('/schedule');
@@ -32,7 +102,8 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-    this.updateConseling();
+    // this.updateConseling();
+    
   }
 
   doLogout() {
@@ -78,5 +149,47 @@ export class HomePage {
       this.conselingApp = res.data;
       console.log(this.conselingApp)
     });
+  }
+
+
+  
+
+  async conselingResult(data: any) {
+    const modal = await this.modalCtrl.create({
+      component: ResultConselingPage,
+      componentProps: {
+        detail: data
+      }
+    });
+    return await modal.present();
+  }
+
+  joinChat(data) {
+    let storeLocal = localStorage.getItem('_USER');
+    let id = JSON.parse(storeLocal)._ID;
+    console.log(data)
+    this.socket.connect()
+    this.socket.emit('set-nickname', id)
+    this.chatRoom(data)
+  }
+
+  async chatRoom(data: any) {
+    const modal = await this.modalCtrl.create({
+      component: ChatRoomPage,
+      componentProps: {
+        messanger: data
+      }
+    });
+    return await modal.present();
+  }
+
+  async myRoom() {
+    const modal = await this.modalCtrl.create({
+      component: PatientPage,
+      componentProps: {
+        conselingApp: this.conselingApp
+      }
+    });
+    return await modal.present();
   }
 }

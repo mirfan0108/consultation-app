@@ -66,24 +66,47 @@
       </ion-row>
       <ion-row>
         <ion-col size="6">
-          Konsultasi <br>
-          <ion-note color="secondary">Diterima</ion-note>
+          Jenis <br>
+          <ion-note color="secondary">Online</ion-note>
         </ion-col>
-        <!-- <ion-col size="6" >
-          Cara <br>
-          <ion-note>Bertemu</ion-note>
-        </ion-col> -->
+        <ion-col size="6" >
+          Metode <br>
+          <ion-note>Chat</ion-note>
+        </ion-col>
       </ion-row>
       <!-- <ion-item lines="none">
-        <ion-buttons slot="end">
-          <ion-button color="success">Beri Tindakan</ion-button>
+        <ion-buttons >
+          <ion-button expand="full" color="success" >Beri Catatan</ion-button>
         </ion-buttons>
       </ion-item> -->
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="finishStaging">
+    <ion-card-header>
+      <ion-card-subtitle>
+        Tulis Hasil Konseling :
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-textarea [(ngModel)]="detail.result" placeholder="Tulis hasil konsultasi dengan pasien ini..."></ion-textarea>
     </ion-card-content>
   </ion-card>
 </ion-content>
 
 <ion-footer>
-  <!-- <ion-button color="danger" expand="full" (click)="generateCancellation()">Batalkan</ion-button> -->
-  
+  <div *ngIf="!finishStaging">
+    <ion-button (click)="joinChat()" expand="full">
+      Mulai Percakapan
+    </ion-button>
+    <ion-button color="warning" expand="full" (click)="doFinish()">Selesaikan</ion-button>
+  </div>
+  <ion-row *ngIf="finishStaging">
+    <ion-col size="6">
+      <ion-button color="success" expand="block" (click)="doAccept()">Simpan</ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button color="danger" expand="block" (click)="doPending()">Nanti Saja</ion-button>
+    </ion-col>
+    
+  </ion-row>
 </ion-footer>

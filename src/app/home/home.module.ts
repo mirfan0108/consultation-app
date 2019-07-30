@@ -5,8 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { ResultConselingPage } from '../modal/result-conseling/result-conseling.page';
+import { ChatRoomPage } from '../chat-room/chat-room.page';
+import { PatientPage } from '../room/patient/patient.page';
 
 @NgModule({
+  entryComponents: [
+    ResultConselingPage,
+    ChatRoomPage,
+    PatientPage
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -18,6 +26,6 @@ import { HomePage } from './home.page';
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, ResultConselingPage, ChatRoomPage, PatientPage]
 })
 export class HomePageModule {}
