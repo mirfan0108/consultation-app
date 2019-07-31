@@ -7,7 +7,7 @@
 <ion-content class="bg-boarding">
   <div style="color: white">
     
-    <div class="center-">
+    <div class="footer-boarding">
       <ion-slides pager="true">
         <ion-slide>
           <!-- <div class="header-slide">
@@ -33,7 +33,7 @@
                     <ion-card-content>
                       <b style="font-family: primaryBold">DIMANAPUN DAN KAPANPUN</b>
                     </ion-card-content>
-                    <img [src]="img1" alt="LOGO" style="width: 20%;">
+                    <img [src]="img1" alt="LOGO" style="width: 40%;">
                     <ion-card-content>
                 <p style="font-family: primaryBold;">Anda dapat melakukan pengaduan dan konseling dimanapun dan kapanpun</p>
               </ion-card-content>
@@ -49,7 +49,7 @@
               </ion-card-content>
             <ion-row justify-content-center>
               <div >
-                <img [src]="img2" alt="LOGO" style="width: 30%;">
+                <img [src]="img2" alt="LOGO" style="width: 40%;">
                 <ion-card-content>
                   <p style="font-family: primaryBold; ">Atur jadwal konseling dengan mudah</p>
                 </ion-card-content>
@@ -65,7 +65,7 @@
                 <ion-card-content>
                   <b style="font-family: primaryBold">AMAN DAN RAHASIA</b>
                 </ion-card-content>
-                <img [src]="img3" alt="LOGO" style="width: 30%;     height: auto;">
+                <img [src]="img3" alt="LOGO" style="width: 50%;     height: auto;">
                 <ion-card-content>
                   <p style="font-family: primaryBold;">Berbicara sebanyak yang anda inginkan tanpa harus merasa malu dan takut</p>
                 </ion-card-content>
@@ -75,15 +75,12 @@
         </ion-slide>
       </ion-slides>
     </div>
-    <div class="footer-boarding">
-      <ion-row>
-        <ion-col size="3"></ion-col>
-        <ion-col size="6">
-          <ion-button mode="ios" expand="block" color="warning" (click)="navigateTo('Home')">MULAI</ion-button>
-        </ion-col>
-        <ion-col size="3"></ion-col>
+    <div class="footer-pull-left">
+      <ion-row justify-content-start>
+        <ion-button mode="ios"  fill="clear" color="light" (click)="navigateTo('Home')">LEWATI</ion-button>
       </ion-row>
     </div>
   </div>
+  
 </ion-content>
 

@@ -11,9 +11,11 @@ export class ResultConselingPage implements OnInit {
   constructor( private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    console.log(this.detail)
   }
 
   closeModal() {
+    console.log(this.detail)
     this.modalCtrl.dismiss()
   }
 

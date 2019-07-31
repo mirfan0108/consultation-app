@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ComplaintPage } from './complaint.page';
 import { CategoryPipe } from '../pipes/category.pipe';
-import { ComplaintStatusPage } from '../modal/complaint-status/complaint-status.page';
+// import { ComplaintStatusPage } from '../modal/complaint-status/complaint-status.page';
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
 
 @NgModule({
   entryComponents: [
-    ComplaintStatusPage,
+    // ComplaintStatusPage,
   ],
   imports: [
     CommonModule,
@@ -26,6 +26,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ComplaintPage, CategoryPipe, ComplaintStatusPage]
+  declarations: [ComplaintPage, CategoryPipe]
 })
 export class ComplaintPageModule {}

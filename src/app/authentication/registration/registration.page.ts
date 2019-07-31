@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { async } from 'q';
 import { ModalController } from '@ionic/angular';
 import { UserAgreementPage } from 'src/app/user-agreement/user-agreement.page';
+import { FormComplaintPage } from 'src/app/complaint/form-complaint/form-complaint.page';
 
 @Component({
   selector: 'app-registration',
@@ -25,7 +26,7 @@ export class RegistrationPage implements OnInit {
     avatar: null,
     password: '',
     confirmPassword: '',
-    role: ''
+    role: 0
   }
   
   resultRegist: boolean;
@@ -74,7 +75,7 @@ export class RegistrationPage implements OnInit {
 
 
   async informed() {
-    if(this.formRegist.role == '0') {
+    if(this.formRegist.role == 0) {
       const modal = await this.modalCtrl.create({
         component: UserAgreementPage
       });
@@ -164,6 +165,7 @@ export class RegistrationPage implements OnInit {
       onOpen: async () => {
         Swal.stopTimer();
         await this.api.register(form).subscribe((resp: any) => {
+          console.log(resp)
           if(resp.code == 409)  {
             Swal.fire({
               type: 'error',
@@ -187,13 +189,14 @@ export class RegistrationPage implements OnInit {
               },
               onOpen: async () => {
                 Swal.stopTimer();
-                await this.api.login(formLogin).subscribe((res :any) => {
+                await this.api.login(formLogin).subscribe(async (res :any) => {
                   if(res.length > 0) {
                     if(res[0]._id) {
                       if(res[0].role == 1) {
                         this.router.navigateByUrl('/conselor');
                       } else {
-                        this.router.navigateByUrl('/home');
+                        this.router.navigateByUrl('/form-complaint');
+                        // this.router.navigateByUrl('/home');
                       }
                     }
                   } else {

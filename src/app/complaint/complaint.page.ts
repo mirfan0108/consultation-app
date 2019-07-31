@@ -18,12 +18,14 @@ export class ComplaintPage implements OnInit {
   ngOnInit() {
     this.apiComplaint.getPatientComplain()
     .subscribe((res: any) => {
-      console.log(res.data)
-      res.data.map(complain => {
-        if(complain.status != 1 && complain.status != 2) {
-          this.complaints.push(complain)
-        }
-      })
+      console.log(res)
+      // console.log(res.data)
+      // res.data.map(complain => {
+      //   if(complain.status != 1 && complain.status != 2) {
+      //     this.complaints.push(complain)
+      //   }
+      // })
+      this.complainStatus(res.data[0])
     })
   }
 
@@ -100,6 +102,9 @@ export class ComplaintPage implements OnInit {
         detail: data
       }
     });
+    modal.onDidDismiss().then(res => {
+      this.router.navigateByUrl('home')
+    })
     return await modal.present();
   }
 

@@ -8,12 +8,14 @@ import { HomePage } from './home.page';
 import { ResultConselingPage } from '../modal/result-conseling/result-conseling.page';
 import { ChatRoomPage } from '../chat-room/chat-room.page';
 import { PatientPage } from '../room/patient/patient.page';
+import { ComplaintStatusPage } from '../modal/complaint-status/complaint-status.page';
 
 @NgModule({
   entryComponents: [
     ResultConselingPage,
     ChatRoomPage,
-    PatientPage
+    PatientPage,
+    ComplaintStatusPage
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,6 @@ import { PatientPage } from '../room/patient/patient.page';
       }
     ])
   ],
-  declarations: [HomePage, ResultConselingPage, ChatRoomPage, PatientPage]
+  declarations: [HomePage, ResultConselingPage, ChatRoomPage, PatientPage, ComplaintStatusPage]
 })
 export class HomePageModule {}

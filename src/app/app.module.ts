@@ -17,7 +17,8 @@ import { ConselingDirective } from './directives/conseling.directive';
 
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
-const config: SocketIoConfig = {url: ' https://conseling-chat-server.herokuapp.com/', options: {}};
+// const config: SocketIoConfig = {url: ' https://conseling-chat-server.herokuapp.com/', options: {}};
+const config: SocketIoConfig = {url: ' http://localhost:3001', options: {}};
 @NgModule({
   declarations: [
     AppComponent, 

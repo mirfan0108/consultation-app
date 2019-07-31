@@ -12,6 +12,7 @@ import { MiniServicesService } from '../services/mini-services.service';
 import { Socket } from 'ng-socket-io';
 import { ChatRoomPage } from '../chat-room/chat-room.page';
 import { PatientPage } from '../room/patient/patient.page';
+import { ComplaintStatusPage } from '../modal/complaint-status/complaint-status.page';
 const MEDIA = environment.imageUrl;
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomePage {
 
   constructor(private router: Router, private api: SchedulerService, private apiConsel: ConselingApiService,
     private apiProfile: ProfileService, private modalCtrl: ModalController,
+    private apiComplaint: ConselorService,
     private apiConselor: ConselorService, private apiCategories: MiniServicesService,
     private socket: Socket) {
     let me = localStorage.getItem('_USER')
@@ -94,7 +96,18 @@ export class HomePage {
         this.router.navigateByUrl('/user');
         break;
       case 'complaint':
-        this.router.navigateByUrl('/complaint');
+          this.apiComplaint.getPatientComplain()
+          .subscribe((res: any) => {
+            console.log(res)
+            // console.log(res.data)
+            // res.data.map(complain => {
+            //   if(complain.status != 1 && complain.status != 2) {
+            //     this.complaints.push(complain)
+            //   }
+            // })
+            this.complainStatus(res.data[0])
+          })
+        // this.router.navigateByUrl('/complaint');
         break;
       default:
         break;
@@ -123,6 +136,16 @@ export class HomePage {
       }
     })
     
+  }
+
+  async complainStatus(data: any) {
+    const modal = await this.modalCtrl.create({
+      component: ComplaintStatusPage,
+      componentProps: {
+        detail: data
+      }
+    });
+    return await modal.present();
   }
 
   updateConseling() {
@@ -155,13 +178,14 @@ export class HomePage {
   
 
   async conselingResult(data: any) {
-    const modal = await this.modalCtrl.create({
-      component: ResultConselingPage,
-      componentProps: {
-        detail: data
-      }
-    });
-    return await modal.present();
+    console.log(data)
+    // const modal = await this.modalCtrl.create({
+    //   component: ResultConselingPage,
+    //   componentProps: {
+    //     detail: data
+    //   }
+    // });
+    // return await modal.present();
   }
 
   joinChat(data) {
